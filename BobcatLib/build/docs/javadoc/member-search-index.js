@@ -1,1 +1,1 @@
-memberSearchIndex = [{"p":"YourLibTemplate","c":"BobcatLib","l":"BobcatLib()","u":"%3Cinit%3E()"}];updateSearchResults();
+memberSearchIndex = [{"p":"BobcatLib","c":"BobcatLib","l":"BobcatLib()","u":"%3Cinit%3E()"}];updateSearchResults();
