@@ -1,0 +1,22 @@
+{
+  "fileName": "BobcatLib.json",
+  "name": "BobcatLib",
+  "version": "0.0.0.1",
+  "frcYear": "2024",
+  "uuid": "b63456c1-24bc-4cb8-a5b5-8fa6aa5c545e",
+  "mavenUrls": [
+    "https://bobcatrobotics.github.io/BobcatLib/repos"
+  ],
+  "jsonUrl": "https://bobcatrobotics.github.io/BobcatLib/BobcatLib.json",
+  "javaDependencies": [
+    {
+      "groupId": "BobcatLib",
+      "artifactId": "BobcatLib-java",
+      "version": "0.0.0.1"
+    }
+  ],
+  "jniDependencies": [
+  ],
+  "cppDependencies": [
+  ]
+}
