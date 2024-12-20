@@ -3,11 +3,11 @@
   "name": "BobcatLib",
   "version": "0.0.0.1",
   "frcYear": "2024",
-  "uuid": "b63456c1-24bc-4cb8-a5b5-8fa6aa5c545e",
+  "uuid": "ce0bdea4-2082-4be3-ac09-73eb45d5ff41",
   "mavenUrls": [
-    "https://bobcatrobotics.github.io/BobcatLib/repos"
+    "https://bobcatrobotics.github.io/BobcatLib/vendordeps/BobcatLib/repos"
   ],
-  "jsonUrl": "https://bobcatrobotics.github.io/BobcatLib/BobcatLib.json",
+  "jsonUrl": "https://bobcatrobotics.github.io/BobcatLib/vendordeps//BobcatLib.json",
   "javaDependencies": [
     {
       "groupId": "BobcatLib",
