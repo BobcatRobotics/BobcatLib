@@ -27,6 +27,7 @@ loadScripts(document, 'script');</script>
 <div class="top-nav" id="navbar-top">
 <div class="skip-nav"><a href="#skip-navbar-top" title="Skip navigation links">Skip navigation links</a></div>
 <ul id="navbar-top-firstrow" class="nav-list" title="Navigation">
+<li><a href="index.html">Overview</a></li>
 <li>Package</li>
 <li>Class</li>
 <li class="nav-bar-cell1-rev">Tree</li>
@@ -49,7 +50,14 @@ loadScripts(document, 'script');</script>
 <h1 class="title">Hierarchy For All Packages</h1>
 <span class="package-hierarchy-label">Package Hierarchies:</span>
 <ul class="horizontal">
-<li><a href="BobcatLib/package-tree.html">BobcatLib</a></li>
+<li><a href="BobcatLib/package-tree.html">BobcatLib</a>, </li>
+<li><a href="BobcatLib/Hardware/Controllers/package-tree.html">BobcatLib.Hardware.Controllers</a>, </li>
+<li><a href="BobcatLib/Hardware/Encoders/package-tree.html">BobcatLib.Hardware.Encoders</a>, </li>
+<li><a href="BobcatLib/Hardware/Motors/package-tree.html">BobcatLib.Hardware.Motors</a>, </li>
+<li><a href="BobcatLib/Hardware/Motors/SensorHelpers/package-tree.html">BobcatLib.Hardware.Motors.SensorHelpers</a>, </li>
+<li><a href="BobcatLib/Logging/package-tree.html">BobcatLib.Logging</a>, </li>
+<li><a href="BobcatLib/Logging/FaultsAndErrors/package-tree.html">BobcatLib.Logging.FaultsAndErrors</a>, </li>
+<li><a href="BobcatLib/Utilities/package-tree.html">BobcatLib.Utilities</a></li>
 </ul>
 </div>
 <section class="hierarchy">
@@ -57,7 +65,100 @@ loadScripts(document, 'script');</script>
 <ul>
 <li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" class="type-name-link external-link" title="class or interface in java.lang">Object</a>
 <ul>
+<li class="circle">BobcatLib.Logging.<a href="BobcatLib/Logging/Alert.html" class="type-name-link" title="class in BobcatLib.Logging">Alert</a></li>
+<li class="circle">BobcatLib.Hardware.Encoders.<a href="BobcatLib/Hardware/Encoders/BaseEncoder.html" class="type-name-link" title="class in BobcatLib.Hardware.Encoders">BaseEncoder</a></li>
+<li class="circle">BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/BaseMotor.html" class="type-name-link" title="class in BobcatLib.Hardware.Motors">BaseMotor</a></li>
 <li class="circle">BobcatLib.<a href="BobcatLib/BobcatLib.html" class="type-name-link" title="class in BobcatLib">BobcatLib</a></li>
+<li class="circle">BobcatLib.Logging.FaultsAndErrors.<a href="BobcatLib/Logging/FaultsAndErrors/CanAndCoderFaults.html" class="type-name-link" title="class in BobcatLib.Logging.FaultsAndErrors">CanAndCoderFaults</a> (implements BobcatLib.Logging.FaultsAndErrors.<a href="BobcatLib/Logging/FaultsAndErrors/FaultsWrapper.html" title="interface in BobcatLib.Logging.FaultsAndErrors">FaultsWrapper</a>)</li>
+<li class="circle">BobcatLib.Hardware.Encoders.<a href="BobcatLib/Hardware/Encoders/CanAndCoderWrapper.html" class="type-name-link" title="class in BobcatLib.Hardware.Encoders">CanAndCoderWrapper</a> (implements BobcatLib.Hardware.Encoders.<a href="BobcatLib/Hardware/Encoders/SwerveAbsEncoder.html" title="interface in BobcatLib.Hardware.Encoders">SwerveAbsEncoder</a>)</li>
+<li class="circle">BobcatLib.Logging.FaultsAndErrors.<a href="BobcatLib/Logging/FaultsAndErrors/CanCoderFaults.html" class="type-name-link" title="class in BobcatLib.Logging.FaultsAndErrors">CanCoderFaults</a> (implements BobcatLib.Logging.FaultsAndErrors.<a href="BobcatLib/Logging/FaultsAndErrors/FaultsWrapper.html" title="interface in BobcatLib.Logging.FaultsAndErrors">FaultsWrapper</a>)</li>
+<li class="circle">BobcatLib.Hardware.Encoders.<a href="BobcatLib/Hardware/Encoders/CanCoderWrapper.html" class="type-name-link" title="class in BobcatLib.Hardware.Encoders">CanCoderWrapper</a> (implements BobcatLib.Hardware.Encoders.<a href="BobcatLib/Hardware/Encoders/SwerveAbsEncoder.html" title="interface in BobcatLib.Hardware.Encoders">SwerveAbsEncoder</a>)</li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/CANDeviceId.html" class="type-name-link" title="class in BobcatLib.Utilities">CANDeviceId</a></li>
+<li class="circle">edu.wpi.first.wpilibj2.command.button.CommandGenericHID
+<ul>
+<li class="circle">edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+<ul>
+<li class="circle">BobcatLib.Hardware.Controllers.<a href="BobcatLib/Hardware/Controllers/PS4ControllerWrapper.html" class="type-name-link" title="class in BobcatLib.Hardware.Controllers">PS4ControllerWrapper</a> (implements BobcatLib.Hardware.Controllers.<a href="BobcatLib/Hardware/Controllers/ControllerWrapper.html" title="interface in BobcatLib.Hardware.Controllers">ControllerWrapper</a>)</li>
+</ul>
+</li>
+<li class="circle">edu.wpi.first.wpilibj2.command.button.CommandPS5Controller
+<ul>
+<li class="circle">BobcatLib.Hardware.Controllers.<a href="BobcatLib/Hardware/Controllers/PS5ControllerWrapper.html" class="type-name-link" title="class in BobcatLib.Hardware.Controllers">PS5ControllerWrapper</a> (implements BobcatLib.Hardware.Controllers.<a href="BobcatLib/Hardware/Controllers/ControllerWrapper.html" title="interface in BobcatLib.Hardware.Controllers">ControllerWrapper</a>)</li>
+</ul>
+</li>
+<li class="circle">edu.wpi.first.wpilibj2.command.button.CommandXboxController
+<ul>
+<li class="circle">BobcatLib.Hardware.Controllers.<a href="BobcatLib/Hardware/Controllers/XboxControllerWrapper.html" class="type-name-link" title="class in BobcatLib.Hardware.Controllers">XboxControllerWrapper</a> (implements BobcatLib.Hardware.Controllers.<a href="BobcatLib/Hardware/Controllers/ControllerWrapper.html" title="interface in BobcatLib.Hardware.Controllers">ControllerWrapper</a>)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/COTSSwerveConstants.html" class="type-name-link" title="class in BobcatLib.Utilities">COTSSwerveConstants</a></li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/COTSSwerveConstants.SDS.html" class="type-name-link" title="class in BobcatLib.Utilities">COTSSwerveConstants.SDS</a></li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/COTSSwerveConstants.SDS.MK3.html" class="type-name-link" title="class in BobcatLib.Utilities">COTSSwerveConstants.SDS.MK3</a></li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/COTSSwerveConstants.SDS.MK3.driveRatios.html" class="type-name-link" title="class in BobcatLib.Utilities">COTSSwerveConstants.SDS.MK3.driveRatios</a></li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/COTSSwerveConstants.SDS.MK4.html" class="type-name-link" title="class in BobcatLib.Utilities">COTSSwerveConstants.SDS.MK4</a></li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/COTSSwerveConstants.SDS.MK4.driveRatios.html" class="type-name-link" title="class in BobcatLib.Utilities">COTSSwerveConstants.SDS.MK4.driveRatios</a></li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/COTSSwerveConstants.SDS.MK4c.html" class="type-name-link" title="class in BobcatLib.Utilities">COTSSwerveConstants.SDS.MK4c</a></li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/COTSSwerveConstants.SDS.MK4c.driveRatios.html" class="type-name-link" title="class in BobcatLib.Utilities">COTSSwerveConstants.SDS.MK4c.driveRatios</a></li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/COTSSwerveConstants.SDS.MK4i.html" class="type-name-link" title="class in BobcatLib.Utilities">COTSSwerveConstants.SDS.MK4i</a></li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/COTSSwerveConstants.SDS.MK4i.driveRatios.html" class="type-name-link" title="class in BobcatLib.Utilities">COTSSwerveConstants.SDS.MK4i.driveRatios</a></li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/COTSSwerveConstants.SDS.MK4n.html" class="type-name-link" title="class in BobcatLib.Utilities">COTSSwerveConstants.SDS.MK4n</a></li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/COTSSwerveConstants.SDS.MK4n.driveRatios.html" class="type-name-link" title="class in BobcatLib.Utilities">COTSSwerveConstants.SDS.MK4n.driveRatios</a></li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/COTSSwerveConstants.WCP.html" class="type-name-link" title="class in BobcatLib.Utilities">COTSSwerveConstants.WCP</a></li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/COTSSwerveConstants.WCP.SwerveXFlipped.html" class="type-name-link" title="class in BobcatLib.Utilities">COTSSwerveConstants.WCP.SwerveXFlipped</a></li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/COTSSwerveConstants.WCP.SwerveXFlipped.driveRatios.html" class="type-name-link" title="class in BobcatLib.Utilities">COTSSwerveConstants.WCP.SwerveXFlipped.driveRatios</a></li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/COTSSwerveConstants.WCP.SwerveXStandard.html" class="type-name-link" title="class in BobcatLib.Utilities">COTSSwerveConstants.WCP.SwerveXStandard</a></li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/COTSSwerveConstants.WCP.SwerveXStandard.driveRatios.html" class="type-name-link" title="class in BobcatLib.Utilities">COTSSwerveConstants.WCP.SwerveXStandard.driveRatios</a></li>
+<li class="circle">BobcatLib.Hardware.Controllers.<a href="BobcatLib/Hardware/Controllers/EightBitDo.html" class="type-name-link" title="class in BobcatLib.Hardware.Controllers">EightBitDo</a> (implements BobcatLib.Hardware.Controllers.<a href="BobcatLib/Hardware/Controllers/ControllerWrapper.html" title="interface in BobcatLib.Hardware.Controllers">ControllerWrapper</a>)</li>
+<li class="circle">BobcatLib.Hardware.Encoders.<a href="BobcatLib/Hardware/Encoders/EncoderConstants.html" class="type-name-link" title="class in BobcatLib.Hardware.Encoders">EncoderConstants</a></li>
+<li class="circle">BobcatLib.Hardware.Encoders.<a href="BobcatLib/Hardware/Encoders/EncoderIO.EncoderIOInputs.html" class="type-name-link" title="class in BobcatLib.Hardware.Encoders">EncoderIO.EncoderIOInputs</a></li>
+<li class="circle">BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/FalconMotor.html" class="type-name-link" title="class in BobcatLib.Hardware.Motors">FalconMotor</a> (implements BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorIO.html" title="interface in BobcatLib.Hardware.Motors">MotorIO</a>)</li>
+<li class="circle">BobcatLib.Hardware.Motors.SensorHelpers.<a href="BobcatLib/Hardware/Motors/SensorHelpers/InvertedWrapper.html" class="type-name-link" title="class in BobcatLib.Hardware.Motors.SensorHelpers">InvertedWrapper</a></li>
+<li class="circle">BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/KrakenMotor.html" class="type-name-link" title="class in BobcatLib.Hardware.Motors">KrakenMotor</a> (implements BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorIO.html" title="interface in BobcatLib.Hardware.Motors">MotorIO</a>)</li>
+<li class="circle">BobcatLib.Hardware.Controllers.<a href="BobcatLib/Hardware/Controllers/Logitech.html" class="type-name-link" title="class in BobcatLib.Hardware.Controllers">Logitech</a> (implements BobcatLib.Hardware.Controllers.<a href="BobcatLib/Hardware/Controllers/ControllerWrapper.html" title="interface in BobcatLib.Hardware.Controllers">ControllerWrapper</a>)</li>
+<li class="circle">BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorConfigs.html" class="type-name-link" title="class in BobcatLib.Hardware.Motors">MotorConfigs</a></li>
+<li class="circle">BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorIO.MotorIOInputs.html" class="type-name-link" title="class in BobcatLib.Hardware.Motors">MotorIO.MotorIOInputs</a></li>
+<li class="circle">BobcatLib.Hardware.Motors.SensorHelpers.<a href="BobcatLib/Hardware/Motors/SensorHelpers/NeutralModeWrapper.html" class="type-name-link" title="class in BobcatLib.Hardware.Motors.SensorHelpers">NeutralModeWrapper</a></li>
+<li class="circle">BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/OptionalConfigCtre.html" class="type-name-link" title="class in BobcatLib.Hardware.Motors">OptionalConfigCtre</a></li>
+<li class="circle">BobcatLib.Logging.FaultsAndErrors.<a href="BobcatLib/Logging/FaultsAndErrors/Pigeon2Faults.html" class="type-name-link" title="class in BobcatLib.Logging.FaultsAndErrors">Pigeon2Faults</a> (implements BobcatLib.Logging.FaultsAndErrors.<a href="BobcatLib/Logging/FaultsAndErrors/FaultsWrapper.html" title="interface in BobcatLib.Logging.FaultsAndErrors">FaultsWrapper</a>)</li>
+<li class="circle">BobcatLib.Hardware.Encoders.<a href="BobcatLib/Hardware/Encoders/RevAbsoluteEncoder.html" class="type-name-link" title="class in BobcatLib.Hardware.Encoders">RevAbsoluteEncoder</a></li>
+<li class="circle">BobcatLib.Logging.FaultsAndErrors.<a href="BobcatLib/Logging/FaultsAndErrors/RobotFaults.html" class="type-name-link" title="class in BobcatLib.Logging.FaultsAndErrors">RobotFaults</a> (implements BobcatLib.Logging.FaultsAndErrors.<a href="BobcatLib/Logging/FaultsAndErrors/FaultsWrapper.html" title="interface in BobcatLib.Logging.FaultsAndErrors">FaultsWrapper</a>)</li>
+<li class="circle">BobcatLib.Hardware.Controllers.<a href="BobcatLib/Hardware/Controllers/Ruffy.html" class="type-name-link" title="class in BobcatLib.Hardware.Controllers">Ruffy</a> (implements BobcatLib.Hardware.Controllers.<a href="BobcatLib/Hardware/Controllers/ControllerWrapper.html" title="interface in BobcatLib.Hardware.Controllers">ControllerWrapper</a>)</li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/Runner.html" class="type-name-link" title="class in BobcatLib.Utilities">Runner</a></li>
+<li class="circle">BobcatLib.Hardware.Motors.SensorHelpers.<a href="BobcatLib/Hardware/Motors/SensorHelpers/SensorDirectionWrapper.html" class="type-name-link" title="class in BobcatLib.Hardware.Motors.SensorHelpers">SensorDirectionWrapper</a></li>
+<li class="circle">BobcatLib.Hardware.Encoders.<a href="BobcatLib/Hardware/Encoders/SparkEncoder.html" class="type-name-link" title="class in BobcatLib.Hardware.Encoders">SparkEncoder</a></li>
+<li class="circle">BobcatLib.Logging.FaultsAndErrors.<a href="BobcatLib/Logging/FaultsAndErrors/SparkMaxFaults.html" class="type-name-link" title="class in BobcatLib.Logging.FaultsAndErrors">SparkMaxFaults</a> (implements BobcatLib.Logging.FaultsAndErrors.<a href="BobcatLib/Logging/FaultsAndErrors/FaultsWrapper.html" title="interface in BobcatLib.Logging.FaultsAndErrors">FaultsWrapper</a>)</li>
+<li class="circle">BobcatLib.Logging.FaultsAndErrors.<a href="BobcatLib/Logging/FaultsAndErrors/TalonFXFaults.html" class="type-name-link" title="class in BobcatLib.Logging.FaultsAndErrors">TalonFXFaults</a> (implements BobcatLib.Logging.FaultsAndErrors.<a href="BobcatLib/Logging/FaultsAndErrors/FaultsWrapper.html" title="interface in BobcatLib.Logging.FaultsAndErrors">FaultsWrapper</a>)</li>
+<li class="circle">BobcatLib.Hardware.Encoders.<a href="BobcatLib/Hardware/Encoders/ThriftyAbsoluteEncoder.html" class="type-name-link" title="class in BobcatLib.Hardware.Encoders">ThriftyAbsoluteEncoder</a> (implements BobcatLib.Hardware.Encoders.<a href="BobcatLib/Hardware/Encoders/SwerveAbsEncoder.html" title="interface in BobcatLib.Hardware.Encoders">SwerveAbsEncoder</a>)</li>
+</ul>
+</li>
+</ul>
+</section>
+<section class="hierarchy">
+<h2 title="Interface Hierarchy">Interface Hierarchy</h2>
+<ul>
+<li class="circle">BobcatLib.Hardware.Controllers.<a href="BobcatLib/Hardware/Controllers/ControllerWrapper.html" class="type-name-link" title="interface in BobcatLib.Hardware.Controllers">ControllerWrapper</a></li>
+<li class="circle">BobcatLib.Hardware.Encoders.<a href="BobcatLib/Hardware/Encoders/EncoderIO.html" class="type-name-link" title="interface in BobcatLib.Hardware.Encoders">EncoderIO</a></li>
+<li class="circle">BobcatLib.Logging.FaultsAndErrors.<a href="BobcatLib/Logging/FaultsAndErrors/FaultsWrapper.html" class="type-name-link" title="interface in BobcatLib.Logging.FaultsAndErrors">FaultsWrapper</a></li>
+<li class="circle">BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorIO.html" class="type-name-link" title="interface in BobcatLib.Hardware.Motors">MotorIO</a></li>
+<li class="circle">BobcatLib.Hardware.Encoders.<a href="BobcatLib/Hardware/Encoders/SwerveAbsEncoder.html" class="type-name-link" title="interface in BobcatLib.Hardware.Encoders">SwerveAbsEncoder</a></li>
+</ul>
+</section>
+<section class="hierarchy">
+<h2 title="Enum Class Hierarchy">Enum Class Hierarchy</h2>
+<ul>
+<li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" class="type-name-link external-link" title="class or interface in java.lang">Object</a>
+<ul>
+<li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" class="type-name-link external-link" title="class or interface in java.lang">Enum</a>&lt;E&gt; (implements java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;T&gt;, java.lang.constant.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a>, java.io.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
+<ul>
+<li class="circle">BobcatLib.Logging.<a href="BobcatLib/Logging/Alert.AlertType.html" class="type-name-link" title="enum class in BobcatLib.Logging">Alert.AlertType</a></li>
+<li class="circle">BobcatLib.Utilities.<a href="BobcatLib/Utilities/CANDeviceId.Manufacturer.html" class="type-name-link" title="enum class in BobcatLib.Utilities">CANDeviceId.Manufacturer</a></li>
+<li class="circle">BobcatLib.Hardware.Motors.SensorHelpers.<a href="BobcatLib/Hardware/Motors/SensorHelpers/NeutralModeWrapper.disabledMode.html" class="type-name-link" title="enum class in BobcatLib.Hardware.Motors.SensorHelpers">NeutralModeWrapper.disabledMode</a></li>
+<li class="circle">BobcatLib.Logging.FaultsAndErrors.<a href="BobcatLib/Logging/FaultsAndErrors/SparkMaxFaults.faults.html" class="type-name-link" title="enum class in BobcatLib.Logging.FaultsAndErrors">SparkMaxFaults.faults</a></li>
+<li class="circle">BobcatLib.Logging.FaultsAndErrors.<a href="BobcatLib/Logging/FaultsAndErrors/TalonFXFaults.faults.html" class="type-name-link" title="enum class in BobcatLib.Logging.FaultsAndErrors">TalonFXFaults.faults</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
