@@ -7,7 +7,7 @@
   "mavenUrls": [
     "https://bobcatrobotics.github.io/BobcatLib/vendordeps/BobcatLib/repos"
   ],
-  "jsonUrl": "https://bobcatrobotics.github.io/BobcatLib/vendordeps//BobcatLib.json",
+  "jsonUrl": "https://bobcatrobotics.github.io/BobcatLib/vendordeps/BobcatLib/BobcatLib.json",
   "javaDependencies": [
     {
       "groupId": "BobcatLib",
