@@ -28,8 +28,6 @@ public interface EncoderIO {
 
   public default void periodic(SparkEncoder encoder) {}
 
-  public default void periodic(SwerveAbsEncoder encoder) {}
-
   public default void periodic(ThriftyAbsoluteEncoder encoder) {}
 
   public default void periodic() {}
@@ -55,4 +53,6 @@ public interface EncoderIO {
 
   /** Clear sticky faults on the encoder. */
   public default void clearStickyFaults() {}
+
+  public default void checkForFaults() {}
 }

@@ -2,6 +2,7 @@ package BobcatLib.Hardware.Motors;
 
 import BobcatLib.Hardware.Motors.SensorHelpers.InvertedWrapper;
 import BobcatLib.Hardware.Motors.SensorHelpers.NeutralModeWrapper;
+import BobcatLib.Logging.FaultsAndErrors.TalonFXFaults;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
@@ -21,6 +22,7 @@ public class KrakenMotor implements MotorIO {
   private final DutyCycleOut motorDutyCycle = new DutyCycleOut(0);
   private final VelocityVoltage motorVelocity = new VelocityVoltage(0);
   private final PositionVoltage motorPositionVoltage = new PositionVoltage(0);
+  private TalonFXFaults faults;
 
   public KrakenMotor(int id, String busname, MotorConfigs config) {
     this.busName = busname;
@@ -70,13 +72,13 @@ public class KrakenMotor implements MotorIO {
     return mMotor.getVelocity().getValueAsDouble();
   }
 
-  public void setSpeed(double speedInMPS) {
+  public void setSpeed(double speedInMPS, boolean isOpenLoop) {
     motorDutyCycle.Output = speedInMPS;
     mMotor.setControl(motorDutyCycle);
   }
 
   /** Sets the Motor Control Speed */
-  public void setSpeed(double speedInMPS, double mechanismCircumference) {
+  public void setSpeed(double speedInMPS, double mechanismCircumference, boolean isOpenLoop) {
     motorVelocity.Velocity = speedInMPS / mechanismCircumference;
     motorVelocity.FeedForward = motorFeedFordward.calculate(speedInMPS);
     mMotor.setControl(motorVelocity);
@@ -95,5 +97,9 @@ public class KrakenMotor implements MotorIO {
 
   public void stopMotor() {
     mMotor.stopMotor();
+  }
+
+  public void checkForFaults() {
+    faults.hasFaultOccured();
   }
 }

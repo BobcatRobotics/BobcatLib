@@ -14,5 +14,6 @@ public class MotorConfigs {
   public double kI;
   public double kD;
   public OptionalConfigCtre optionalCtre = new OptionalConfigCtre();
+  public OptionalConfigRev optionalRev = new OptionalConfigRev();
   public CANDeviceId canDevice;
 }

@@ -3,7 +3,7 @@ package BobcatLib.Hardware.Encoders;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
 
-public class ThriftyAbsoluteEncoder implements SwerveAbsEncoder {
+public class ThriftyAbsoluteEncoder implements EncoderIO {
   public AnalogInput encoder;
   private boolean isInverted;
   public EncoderConstants chosenModule;
@@ -38,4 +38,6 @@ public class ThriftyAbsoluteEncoder implements SwerveAbsEncoder {
   public void clearStickyFaults() {
     // Do nothing
   }
+
+  public void checkForFaults() {}
 }

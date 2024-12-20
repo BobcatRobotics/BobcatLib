@@ -18,6 +18,7 @@ public class BaseEncoder {
   /** Configs the absolute encoder sensor position , determining invertion. */
   public void configAbsEncoder() {
     io.configAbsEncoder();
+    checkForFaults();
   }
 
   /**
@@ -27,6 +28,7 @@ public class BaseEncoder {
    */
   public double getAbsolutePosition() {
     double absPos = io.getAbsolutePosition();
+    checkForFaults();
     return absPos;
   }
 
@@ -37,10 +39,16 @@ public class BaseEncoder {
    */
   public void factoryDefault() {
     io.factoryDefault();
+    checkForFaults();
   }
 
   /** Clear sticky faults on the encoder. */
   public void clearStickyFaults() {
     io.clearStickyFaults();
+    checkForFaults();
+  }
+
+  public void checkForFaults() {
+    io.checkForFaults();
   }
 }

@@ -46,4 +46,6 @@ public class RevAbsoluteEncoder {
   public void clearStickyFaults() {
     // Do nothing
   }
+
+  public void checkForFaults() {}
 }

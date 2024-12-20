@@ -41,13 +41,16 @@ public interface MotorIO {
     return 0;
   }
 
-  public default void setSpeed(double speedInMPS) {}
+  public default void setSpeed(double speedInMPS, boolean isOpenLoop) {}
 
-  public default void setSpeed(double speedInMPS, double mechanismCircumference) {}
+  public default void setSpeed(
+      double speedInMPS, double mechanismCircumference, boolean isOpenLoop) {}
 
   public default void setAngle(double angleInRotations) {}
 
   public default void setControl(double volts) {}
 
   public default void stopMotor() {}
+
+  public default void checkForFaults() {}
 }

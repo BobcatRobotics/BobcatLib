@@ -1,11 +1,10 @@
 package BobcatLib.Hardware.Motors;
 
-import java.lang.Cloneable;
-import java.lang.Override;
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 
-public class MotorIOInputsAutoLogged extends MotorIO.MotorIOInputs implements LoggableInputs, Cloneable {
+public class MotorIOInputsAutoLogged extends MotorIO.MotorIOInputs
+    implements LoggableInputs, Cloneable {
   @Override
   public void toLog(LogTable table) {
     table.put("MotorPosition", motorPosition);

@@ -1,11 +1,11 @@
 package BobcatLib.Hardware.Encoders;
 
 import BobcatLib.Logging.Alert;
+import BobcatLib.Logging.FaultsAndErrors.CanCoderFaults;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
-import com.ctre.phoenix6.signals.MagnetHealthValue;
 
-public class CanCoderWrapper implements SwerveAbsEncoder {
+public class CanCoderWrapper implements EncoderIO {
   public CANcoderConfiguration swerveCANcoderConfig = new CANcoderConfiguration();
   private CANcoder encoder;
   /** Last angle reading was faulty. */
@@ -19,27 +19,22 @@ public class CanCoderWrapper implements SwerveAbsEncoder {
           "CAN IDs greater than 40 can cause undefined behaviour, please use a CAN ID below 40!",
           Alert.AlertType.WARNING);
 
-  public final Alert magnetFieldLessThanIdeal;
-  public final Alert readingFaulty;
   public EncoderConstants chosenModule;
+
+  private CanCoderFaults faults;
 
   public CanCoderWrapper(int id, EncoderConstants chosenModule, String canivorename) {
     if (id >= 40) {
       canIdWarning.set(true);
     }
-    magnetFieldLessThanIdeal =
-        new Alert(
-            "Encoders",
-            "CANCoder " + id + " magnetic field is less than ideal.",
-            Alert.AlertType.WARNING);
-    readingFaulty =
-        new Alert("Encoders", "CANCoder " + id + " reading was faulty.", Alert.AlertType.WARNING);
     this.chosenModule = chosenModule;
     configAbsEncoder();
 
     /* Angle Encoder Config */
     encoder = new CANcoder(id, canivorename);
     encoder.getConfigurator().apply(swerveCANcoderConfig);
+
+    faults = new CanCoderFaults(encoder, id);
   }
 
   /** Configs the absolute encoder sensor position , determining invertion. */
@@ -56,16 +51,6 @@ public class CanCoderWrapper implements SwerveAbsEncoder {
    * @return Absolute position in rotation (-1 to 0 ) or (0 to 1)
    */
   public double getAbsolutePosition() {
-    readingError = false;
-    MagnetHealthValue strength = encoder.getMagnetHealth().getValue();
-    magnetFieldLessThanIdeal.set(strength != MagnetHealthValue.Magnet_Green);
-    if (strength == MagnetHealthValue.Magnet_Invalid || strength == MagnetHealthValue.Magnet_Red) {
-      readingError = true;
-      readingFaulty.set(true);
-      return 0;
-    } else {
-      readingFaulty.set(false);
-    }
     return encoder.getAbsolutePosition().getValue();
   }
 
@@ -77,5 +62,9 @@ public class CanCoderWrapper implements SwerveAbsEncoder {
   /** Clear sticky faults on the encoder. */
   public void clearStickyFaults() {
     encoder.clearStickyFaults();
+  }
+
+  public void checkForFaults() {
+    faults.hasFaultOccured();
   }
 }

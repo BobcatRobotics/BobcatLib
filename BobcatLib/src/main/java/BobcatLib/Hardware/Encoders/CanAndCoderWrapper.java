@@ -1,9 +1,10 @@
 package BobcatLib.Hardware.Encoders;
 
 import BobcatLib.Logging.Alert;
+import BobcatLib.Logging.FaultsAndErrors.CanAndCoderFaults;
 import com.reduxrobotics.sensors.canandcoder.Canandcoder;
 
-public class CanAndCoderWrapper implements SwerveAbsEncoder {
+public class CanAndCoderWrapper implements EncoderIO {
   private Canandcoder encoder;
   /** Last angle reading was faulty. */
   public boolean readingError = false;
@@ -19,6 +20,8 @@ public class CanAndCoderWrapper implements SwerveAbsEncoder {
   public final Alert magnetFieldLessThanIdeal;
   public EncoderConstants chosenModule;
 
+  private CanAndCoderFaults faults;
+
   public CanAndCoderWrapper(int id, EncoderConstants chosenModule) {
     if (id >= 40) {
       canIdWarning.set(true);
@@ -33,6 +36,8 @@ public class CanAndCoderWrapper implements SwerveAbsEncoder {
 
     /* Angle Encoder Config */
     encoder = new Canandcoder(id);
+
+    faults = new CanAndCoderFaults(encoder, id);
   }
 
   /** Configs the absolute encoder sensor position , determining invertion. */
@@ -65,5 +70,9 @@ public class CanAndCoderWrapper implements SwerveAbsEncoder {
   /** Clear sticky faults on the encoder. */
   public void clearStickyFaults() {
     encoder.clearStickyFaults();
+  }
+
+  public void checkForFaults() {
+    faults.hasFaultOccured();
   }
 }

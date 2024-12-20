@@ -48,4 +48,6 @@ public class SparkEncoder {
   public void clearStickyFaults() {
     // Do nothing
   }
+
+  public void checkForFaults() {}
 }

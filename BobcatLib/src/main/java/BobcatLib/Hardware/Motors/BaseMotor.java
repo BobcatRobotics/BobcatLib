@@ -26,19 +26,27 @@ public class BaseMotor {
 
   public void stopMotor() {
     io.stopMotor();
+    checkForFaults();
   }
 
   /** Sets the Motor Control Speed */
-  public void setSpeed(double speedInMPS, double mechanismCircumference) {
-    io.setSpeed(speedInMPS, mechanismCircumference);
+  public void setSpeed(double speedInMPS, double mechanismCircumference, boolean isOpenLoop) {
+    io.setSpeed(speedInMPS, mechanismCircumference, isOpenLoop);
+    checkForFaults();
   }
 
   public void setAngle(double angleInRotations) {
     io.setAngle(angleInRotations);
+    checkForFaults();
   }
 
   /** SysID Mode Methods * */
   public void setControl(double volts) {
     io.setControl(volts);
+    checkForFaults();
+  }
+
+  public void checkForFaults() {
+    io.checkForFaults();
   }
 }
