@@ -1,6 +1,9 @@
 BobcatLib
 BobcatLib.Hardware.Controllers
+BobcatLib.Hardware.Controllers.parser
 BobcatLib.Hardware.Encoders
+BobcatLib.Hardware.Gyros
+BobcatLib.Hardware.Gyros.parser
 BobcatLib.Hardware.LedControllers
 BobcatLib.Hardware.Motors
 BobcatLib.Hardware.Motors.SensorHelpers
