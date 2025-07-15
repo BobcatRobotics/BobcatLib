@@ -36,7 +36,7 @@ public record CANDeviceDetails(
      * Constructs a {@code CANDeviceDetails} record with the specified properties.
      * All fields are required and validated to be non-null.
      *
-     * @param id            the CAN ID of the device (0–63 typical range)
+     * @param id            the CAN ID of the device (0 to 63 typical range)
      * @param bus           the name of the CAN bus the device is on (e.g., "rio", "canivore")
      * @param manufacturer  the manufacturer of the device
      * @param subsystemName the robot subsystem this device belongs to (e.g., "drive", "arm")
