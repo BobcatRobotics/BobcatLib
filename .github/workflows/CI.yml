@@ -25,6 +25,9 @@ jobs:
       - name: Fetch all history and metadata
         run: |
           git config --global --add safe.directory /__w/${{ github.event.repository.name }}/${{ github.event.repository.name }}
+      - name: Fetch all history and metadata
+        run: |
+          git config --global --add safe.directory /__w/${{ github.event.repository.name }}
       - name: Install roboRio toolchain
         run: ./gradlew installRoboRioToolchain
       - name: Build with Gradle
