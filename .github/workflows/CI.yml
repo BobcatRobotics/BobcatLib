@@ -1,66 +1,113 @@
-# This is a basic workflow to build robot code.
-
 name: CI
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the main branch.
 on: [push, pull_request]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "LessonOne"
-  build-main:
-    # The type of runner that the job will run on
+  build-docker:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - container: wpilib/roborio-cross-ubuntu:2024-22.04
+            artifact-name: Athena
+            build-options: "-Ponlylinuxathena"
+          - container: wpilib/ubuntu-base:22.04
+            artifact-name: Linux
+            build-options: ""
+    name: "Build - ${{ matrix.artifact-name }}"
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: BobcatLib
-
-    # This grabs the WPILib docker container
-    container: wpilib/roborio-cross-ubuntu:2024-22.04
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    container: ${{ matrix.container }}
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
-
-      # Declares the repository safe and not under dubious ownership.
-      - name: Add repository to git safe directories
-        run: git config --global --add safe.directory $GITHUB_WORKSPACE
-
-      # Grant execute permission for gradlew
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
+        with:
+          submodules: true
+          fetch-depth: 0
+      - name: Fetch all history and metadata
+        run: |
+          git config --global --add safe.directory /__w/${{ github.event.repository.name }}/${{ github.event.repository.name }}
       - name: Install roboRio toolchain
         run: ./gradlew installRoboRioToolchain
-
-      # Runs a single command using the runners shell
+        working-directory: BobcatLib
+      - name: Build with Gradle
+        run: ./gradlew build --max-workers 1 ${{ matrix.build-options }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.artifact-name }}
+          path: build/allOutputs
       - name: Run Checkstyle
         run: ./gradlew checkstyleMain
-
-      - name: Upload Checkstyle report
+        working-directory: BobcatLib
+      - name: Upload Checkstyle Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: checkstyle-report
-          path: build/reports/checkstyle
-    
-      # Runs a single command using the runners shell
-      - name: Build with Gradle
-        run: ./gradlew build
-
-      # Runs a single command using the runners shell
-      - name: Compile and run tests on robot code
-        run: ./gradlew test
-
-      # Runs a single command to generate docs of your code
-      - name: Generate Docs
+          path: build/reports/checkstyle/
+      - name: Generate Javadoc
         run: ./gradlew javadoc
-
+        working-directory: BobcatLib
       - name: Upload Javadocs
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: javadocs-report
+          name: javadoc-report
           path: build/docs/javadoc
+  build-host:
+    env: 
+      MACOSX_DEPLOYMENT_TARGET: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-2022
+            artifact-name: Win64
+            architecture: x64
+          - os: macos-12
+            artifact-name: macOS
+            architecture: x64
+    name: "Build - ${{ matrix.artifact-name }}"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Fetch all history and metadata
+        run: git fetch --prune --unshallow
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+          architecture: ${{ matrix.architecture }}
+      - name: Install roboRio toolchain
+        run: ./gradlew installRoboRioToolchain
+        working-directory: BobcatLib
+      - name: Build with Gradle
+        run: ./gradlew build -Pbuildalldesktop
+        working-directory: BobcatLib
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.artifact-name }}
+          path: build/allOutputs
+  combine:
+    name: Combine
+    needs: [build-docker, build-host]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: wpilibsuite/build-tools
+      - uses: actions/download-artifact@v3
+        with:
+          path: combiner/products/build/allOutputs
+      - name: Flatten Artifacts
+        run: rsync -a --delete combiner/products/build/allOutputs/*/* combiner/products/build/allOutputs/
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+      - name: Combine
+        working-directory: combiner
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Maven
+          path: ~/releases
