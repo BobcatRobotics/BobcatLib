@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"BobcatLib"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"BobcatLib"},{"l":"BobcatLib.Hardware.Configurators"},{"l":"BobcatLib.Hardware.Motors.TalonFX"},{"l":"BobcatLib.Hardware.Motors.TalonFX.utils"},{"l":"BobcatLib.Utils"}];updateSearchResults();

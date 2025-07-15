@@ -12,4 +12,16 @@
 -notimestamp 
 -quiet 
 -windowtitle 'BobcatLib API'
+'/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/BobcatLib/Hardware/Configurators/Pigeon2ConfigApplier.java'
+'/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/BobcatLib/Hardware/Configurators/CANCoderConfigApplier.java'
+'/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/BobcatLib/Hardware/Configurators/ConfigApplier.java'
+'/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/BobcatLib/Hardware/Configurators/TalonFXConfigApplier.java'
+'/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/BobcatLib/Hardware/Motors/TalonFX/utils/MotorInterface.java'
+'/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/BobcatLib/Hardware/Motors/TalonFX/utils/PidControllerWrapper.java'
+'/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/BobcatLib/Hardware/Motors/TalonFX/utils/MotorStateMachine.java'
+'/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/BobcatLib/Hardware/Motors/TalonFX/utils/MotorValues.java'
+'/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/BobcatLib/Hardware/Motors/TalonFX/utils/MotorBuilder.java'
+'/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/BobcatLib/Hardware/Motors/TalonFX/MotorBase.java'
+'/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/BobcatLib/Hardware/Motors/TalonFX/TalonFXMotor.java'
 '/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/BobcatLib/BobcatLib.java'
+'/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/BobcatLib/Utils/CANDeviceDetails.java'

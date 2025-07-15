@@ -61,18 +61,6 @@
     </module>
 
     <!--
-      Indentation:
-      Enforces indentation levels using 4 spaces.
-      caseIndent controls indentation inside switch-case.
-      tabWidth specifies tab width for display if tabs are present.
-    -->
-    <module name="Indentation">
-      <property name="basicOffset" value="2"/>
-      <property name="caseIndent" value="2"/>
-      <property name="tabWidth" value="2"/>
-    </module>
-
-    <!--
       LeftCurly and RightCurly:
       Enforce brace placement.
       LeftCurly option "eol" means opening braces must be at end of the line, not next line.
