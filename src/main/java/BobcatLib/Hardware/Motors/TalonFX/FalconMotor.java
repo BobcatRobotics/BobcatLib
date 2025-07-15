@@ -12,14 +12,14 @@ import com.ctre.phoenix6.hardware.ParentDevice;
 /**
  * The main TalonFX Class that should be used in code.
  */
-public class TalonFXMotor extends MotorBase implements MotorInterface {
+public class FalconMotor extends MotorBase implements MotorInterface {
     private MotorStateMachine state;
 
     /**
      * @param details the can device details and hardware details
      * @param motor MotorBuilder instance that defines the config
      */
-    public TalonFXMotor(CANDeviceDetails details, MotorBuilder motor) {
+    public FalconMotor(CANDeviceDetails details, MotorBuilder motor) {
         super(details, motor.build());
 
         configure();
