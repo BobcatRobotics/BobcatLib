@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: 2025-SummerActivity
+        working-directory: ./
 
     # This grabs the WPILib docker container
     container: wpilib/roborio-cross-ubuntu:2024-22.04
