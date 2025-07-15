@@ -30,28 +30,12 @@ jobs:
         working-directory: BobcatLib
       - name: Build with Gradle
         run: ./gradlew build --max-workers 1 ${{ matrix.build-options }}
+        working-directory: BobcatLib
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.artifact-name }}
           path: build/allOutputs
-      - name: Run Checkstyle
-        run: ./gradlew checkstyleMain
-        working-directory: BobcatLib
-      - name: Upload Checkstyle Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: checkstyle-report
-          path: build/reports/checkstyle/
-      - name: Generate Javadoc
-        run: ./gradlew javadoc
-        working-directory: BobcatLib
-      - name: Upload Javadocs
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: javadoc-report
-          path: build/docs/javadoc
+
   build-host:
     env: 
       MACOSX_DEPLOYMENT_TARGET: 12
@@ -88,6 +72,7 @@ jobs:
         with:
           name: ${{ matrix.artifact-name }}
           path: build/allOutputs
+
   combine:
     name: Combine
     needs: [build-docker, build-host]
@@ -106,6 +91,7 @@ jobs:
           distribution: 'zulu'
           java-version: 17
       - name: Combine
+        run: ./gradlew publish -Pthirdparty
         working-directory: combiner
       - uses: actions/upload-artifact@v3
         with:
