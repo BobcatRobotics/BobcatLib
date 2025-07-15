@@ -27,6 +27,7 @@ jobs:
           git config --global --add safe.directory /__w/${{ github.event.repository.name }}/${{ github.event.repository.name }}
       - name: Install roboRio toolchain
         run: ./gradlew installRoboRioToolchain
+        working-directory: BobcatLib
       - name: Build with Gradle
         run: ./gradlew build --max-workers 1 ${{ matrix.build-options }}
       - uses: actions/upload-artifact@v4
