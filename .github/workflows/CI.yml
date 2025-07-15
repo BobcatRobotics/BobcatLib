@@ -92,6 +92,12 @@ jobs:
       - name: Combine
         run: ./gradlew publish -Pthirdparty
         working-directory: combiner
+      - name: Generate Javadoc
+        run: mvn javadoc:javadoc
+      - name: Copy to release folder
+        run: |
+          mkdir -p ~/releases
+          cp -r target/site/apidocs/* ~/releases/
       - uses: actions/upload-artifact@v4
         with:
           name: Maven
