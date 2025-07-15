@@ -12,52 +12,52 @@ jobs:
   build-main:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: BobcatLib
 
     # This grabs the WPILib docker container
     container: wpilib/roborio-cross-ubuntu:2024-22.04
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v4
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
 
-    # Declares the repository safe and not under dubious ownership.
-    - name: Add repository to git safe directories
-      run: git config --global --add safe.directory $GITHUB_WORKSPACE
+      # Declares the repository safe and not under dubious ownership.
+      - name: Add repository to git safe directories
+        run: git config --global --add safe.directory $GITHUB_WORKSPACE
 
-    # Grant execute permission for gradlew
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-      
-    # Runs a single command using the runners shell
-    - name: Compile robot code
-      run: ./gradlew build
+      # Grant execute permission for gradlew
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-    - name: Run Checkstyle
-      run: ./gradlew checkstyleMain
+      # Runs a single command using the runners shell
+      - name: Run Checkstyle
+        run: ./gradlew checkstyleMain
 
-    - name: Upload Checkstyle report
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: checkstyle-report
-        path: build/reports/checkstyle/
+      - name: Upload Checkstyle report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkstyle-report
+          path: build/reports/checkstyle
+    
+      # Runs a single command using the runners shell
+      - name: Compile robot code
+        run: ./gradlew build
 
-    # Runs a single command using the runners shell
-    - name: Compile robot code
-      run: ./gradlew build
+      # Runs a single command using the runners shell
+      - name: Compile and run tests on robot code
+        run: ./gradlew test
 
-    # Runs a single command using the runners shell
-    - name: Compile and run tests on robot code
-      run: ./gradlew test
+      # Runs a single command to generate docs of your code
+      - name: Generate Docs
+        run: ./gradlew javadoc
 
-    # Runs a single command to generate docs of your code
-    - name: Generate Docs
-      run: ./gradlew javadoc
-
-    - name: Upload Javadocs
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: javadocs-report
-        path: build/docs/javadoc
+      - name: Upload Javadocs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: javadocs-report
+          path: build/docs/javadoc
