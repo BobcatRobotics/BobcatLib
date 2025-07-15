@@ -32,6 +32,9 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Install roboRio toolchain
+        run: ./gradlew installRoboRioToolchain
+
       # Runs a single command using the runners shell
       - name: Run Checkstyle
         run: ./gradlew checkstyleMain
@@ -44,7 +47,7 @@ jobs:
           path: build/reports/checkstyle
     
       # Runs a single command using the runners shell
-      - name: Compile robot code
+      - name: Build with Gradle
         run: ./gradlew build
 
       # Runs a single command using the runners shell
