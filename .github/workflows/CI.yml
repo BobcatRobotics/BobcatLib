@@ -36,6 +36,12 @@ jobs:
         with:
           name: ${{ matrix.artifact-name }}
           path: build/allOutputs
+      - name: Generate Javadoc
+        run: ./gradlew javadoc
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact-name }}
+          path: build/docs
 
   build-host:
     env: 
@@ -71,6 +77,12 @@ jobs:
         with:
           name: ${{ matrix.artifact-name }}
           path: build/allOutputs
+        - name: Generate Javadoc
+          run: ./gradlew javadoc
+        - uses: actions/upload-artifact@v4
+          with:
+            name: ${{ matrix.artifact-name }}
+            path: build/docs
 
   combine:
     name: Combine
