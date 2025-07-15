@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"org.lib","l":"BobcatLib"}];updateSearchResults();
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"org.Hardware.Utils","l":"CANDeviceDetails"},{"p":"org.Hardware.Utils","l":"CANDeviceDetails.Manufacturer"}];updateSearchResults();

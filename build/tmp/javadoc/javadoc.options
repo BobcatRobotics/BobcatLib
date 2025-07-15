@@ -12,7 +12,6 @@
 -notimestamp 
 -quiet 
 -windowtitle 'BobcatLib API'
-'/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/org/lib/BobcatLib.java'
-'/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/org/lib/package-info.java'
-'/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/org/package-info.java'
+'/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/org/Hardware/Utils/CANDeviceDetails.java'
+'/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/org/Hardware/Utils/package-info.java'
 '/Users/ao/Documents/GitHub/BobcatRobotics/BobcatLib/src/main/java/package-info.java'

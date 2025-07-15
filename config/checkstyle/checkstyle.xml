@@ -67,9 +67,9 @@
       tabWidth specifies tab width for display if tabs are present.
     -->
     <module name="Indentation">
-      <property name="basicOffset" value="4"/>
-      <property name="caseIndent" value="4"/>
-      <property name="tabWidth" value="4"/>
+      <property name="basicOffset" value="2"/>
+      <property name="caseIndent" value="2"/>
+      <property name="tabWidth" value="2"/>
     </module>
 
     <!--
