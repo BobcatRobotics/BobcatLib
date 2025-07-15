@@ -1,1 +1,6 @@
+org.Controllers
+org.Hardware.CTRE.Configurators
+org.Hardware.Motors.MotorControlModes
+org.Hardware.Motors.MotorControlModes.Position
+org.Hardware.Motors.MotorControlModes.Velocity
 org.Hardware.Utils
