@@ -1,5 +1,3 @@
 BobcatLib
-BobcatLib.Hardware.Configurators
-BobcatLib.Hardware.Motors.TalonFX
-BobcatLib.Hardware.Motors.TalonFX.utils
+BobcatLib.Hardware
 BobcatLib.Utils
