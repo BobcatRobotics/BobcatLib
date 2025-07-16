@@ -1,9 +1,9 @@
-package BobcatLib.Hardware;
+package BobcatLib.Hardware.Motors;
 
 public class MotorStateMachine {
 
     public enum MotorState {
-        IDLE, FORWARD, REVERSE, UNKNOWN, ERROR
+        IDLE, FORWARD, REVERSE, UNKNOWN, ERROR,STALL
     }
 
     private MotorState currentState;

@@ -5,6 +5,7 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.TorqueCurrentFOC;
@@ -57,17 +58,19 @@ public class MotorIOTalonFX implements MotorIO {
 
   public boolean isTorqueCurrent = false;
   public boolean isFOC = false;
+  public boolean isPositionControl = false;
 
 
-  private final Slot0Configs velocityGains;
-  private final Slot0Configs positionGains;
+  private final Slot0Configs motorPID;
 
-  public MotorIOTalonFX(TalonFXConfiguration motorConfig, double statorCurrentLimit,
-      boolean invertedState, double motorMechanismRatio, Slot0Configs motorPID, int feedbackId,
-      FeedbackSensorSourceValue feedbackSensor, boolean isFeedbackEnabled, boolean isBrake,
-      boolean isTorqueCurrent, boolean isFOC) {
+  public MotorIOTalonFX(boolean isPositionControl, TalonFXConfiguration motorConfig,
+      double statorCurrentLimit, boolean invertedState, double motorMechanismRatio,
+      Slot0Configs motorPID, int feedbackId, FeedbackSensorSourceValue feedbackSensor,
+      boolean isFeedbackEnabled, boolean isBrake, boolean isTorqueCurrent, boolean isFOC) {
+    this.isPositionControl = isPositionControl;
     this.isTorqueCurrent = isTorqueCurrent;
     this.isFOC = isFOC;
+    this.motorPID = motorPID;
     // Configure drive motor
     config = motorConfig;
     config.MotorOutput.NeutralMode = isBrake ? NeutralModeValue.Brake : NeutralModeValue.Coast;
@@ -101,11 +104,10 @@ public class MotorIOTalonFX implements MotorIO {
 
     state = new MotorStateMachine();
     state.setMotorState(motorCurrent.getValueAsDouble());
-  
-     // Configure periodic frames
-    BaseStatusSignal.setUpdateFrequencyForAll(
-        50.0,
-        relativePosition,motorVelocity,motorAppliedVolts,motorCurrent);
+
+    // Configure periodic frames
+    BaseStatusSignal.setUpdateFrequencyForAll(50.0, relativePosition, motorVelocity,
+        motorAppliedVolts, motorCurrent);
     ParentDevice.optimizeBusUtilizationForAll(motor);
 
   }
@@ -127,57 +129,42 @@ public class MotorIOTalonFX implements MotorIO {
 
 
   public void setVelocityOpenLoop(double output) {
-    motor.setControl(
-        switch (isTorqueCurrent) {
-          case false -> voltageRequest.withOutput(output).withEnableFOC(isFOC);
-          case true -> torqueCurrentRequest.withOutput(output);
-        });
+    var request = isTorqueCurrent ? torqueCurrentRequest.withOutput(output)
+        : voltageRequest.withOutput(output).withEnableFOC(isFOC);
+    motor.setControl(request);
   }
 
 
   public void setPositionOpenLoop(double output) {
-    motor.setControl(
-        switch (isTorqueCurrent) {
-          case false -> voltageRequest.withOutput(output);
-          case true -> torqueCurrentRequest.withOutput(output);
-        });
+    var request = isTorqueCurrent ? torqueCurrentRequest.withOutput(output)
+        : voltageRequest.withOutput(output).withEnableFOC(isFOC);
+    motor.setControl(request);
   }
 
   public void setVelocityClosedLoop(double velocityRadPerSec) {
     double velocityRotPerSec = Units.radiansToRotations(velocityRadPerSec);
-    motor.setControl(
-        switch (isTorqueCurrent) {
-          case false -> velocityVoltageRequest
-              .withVelocity(velocityRotPerSec)
-              .withEnableFOC(isFOC);
-          case true -> velocityTorqueCurrentRequest.withVelocity(velocityRotPerSec);
-        });
+
+    var request = isTorqueCurrent ? velocityTorqueCurrentRequest.withVelocity(velocityRotPerSec)
+        : velocityVoltageRequest.withVelocity(velocityRotPerSec).withEnableFOC(isFOC);
+
+    motor.setControl(request);
   }
 
   public void setPositionClosedLoop(Rotation2d rotation) {
-    motor.setControl(
-        switch (isTorqueCurrent) {
-          case false -> positionVoltageRequest.withPosition(rotation.getRotations());
-          case true -> positionTorqueCurrentRequest.withPosition(
-              rotation.getRotations());
-        });
+    var request =
+        isTorqueCurrent ? positionTorqueCurrentRequest.withPosition(rotation.getRotations())
+            : positionVoltageRequest.withPosition(rotation.getRotations());
+
+    motor.setControl(request);
   }
 
-  public void setVelocityPIDandFF(double kp, double kd, double kv, double ka, double ks) {
-    velocityGains.kP = kp;
-    velocityGains.kD = kd;
-    velocityGains.kV = kv;
-    velocityGains.kA = ka;
-    velocityGains.kS = ks;
-    tryUntilOk(5, () -> motor.getConfigurator().apply(velocityGains, 0.25));
+  public void setMotorPIDandFF(double kp, double kd, double kv, double ka, double ks) {
+    motorPID.kP = kp;
+    motorPID.kD = kd;
+    motorPID.kV = kv;
+    motorPID.kA = ka;
+    motorPID.kS = ks;
+    tryUntilOk(5, () -> motor.getConfigurator().apply(motorPID, 0.25));
   }
 
-  public void setPositionPIDandFF(double kp, double kd, double kv, double ka, double ks) {
-    positionGains.kP = kp;
-    positionGains.kD = kd;
-    positionGains.kV = kv;
-    positionGains.kA = ka;
-    positionGains.kS = ks;
-    tryUntilOk(5, () -> motor.getConfigurator().apply(velocityGains, 0.25));
-  }
 }

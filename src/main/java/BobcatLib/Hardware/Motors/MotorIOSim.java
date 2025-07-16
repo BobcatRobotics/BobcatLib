@@ -10,19 +10,19 @@ import edu.wpi.first.math.util.Units;
 
 public class MotorIOSim implements MotorIO {
     // TunerConstants doesn't support separate sim constants, so they are declared locally
-    public static final double DRIVE_KP = 0.066;
+    public static final double DRIVE_KP = 0.0;
     public static final double DRIVE_KD = 0.0;
     public static final double DRIVE_KS = 0.0;
-    public static final double DRIVE_KV_ROT = 0.91035; // Same units as TunerConstants: (volt *
-                                                       // secs) / rotation
+    public static final double DRIVE_KV_ROT = 0.0; // Same units as TunerConstants: (volt *
+                                                   // secs) / rotation
     public static double DRIVE_KV = 0.77 / Units.rotationsToRadians(1.0 / DRIVE_KV_ROT);
     public static final double TURN_KP = 8.0;
     public static final double TURN_KD = 0.0;
     public static final DCMotor DRIVE_GEARBOX = DCMotor.getKrakenX60Foc(1);
     public static final DCMotor TURN_GEARBOX = DCMotor.getKrakenX60Foc(1);
 
-    private  DCMotorSim driveSim;
-    private  DCMotorSim turnSim;
+    private DCMotorSim driveSim;
+    private DCMotorSim turnSim;
 
     private boolean driveClosedLoop = false;
     private boolean turnClosedLoop = false;
@@ -32,7 +32,10 @@ public class MotorIOSim implements MotorIO {
     private double driveAppliedVolts = 0.0;
     private double turnAppliedVolts = 0.0;
 
-    public MotorIOSim() {
+    public boolean isPositionControl = false;
+
+    public MotorIOSim(boolean isPositionControl) {
+        this.isPositionControl = isPositionControl;
         driveSim = null;
         turnSim = null;
         // Enable wrapping for turn PID
@@ -41,23 +44,23 @@ public class MotorIOSim implements MotorIO {
 
     public MotorIOSim(boolean isPositionControl, double inertia, double mechanismGearRatio) {
         if (isPositionControl) {
-            asPositionControl(inertia,mechanismGearRatio);
+            asPositionControl(inertia, mechanismGearRatio);
         } else {
-            asVelocityControl(inertia,mechanismGearRatio);
+            asVelocityControl(inertia, mechanismGearRatio);
         }
     }
 
     public MotorIOSim asPositionControl(double inertia, double mechanismGearRatio) {
         driveSim = new DCMotorSim(
-            LinearSystemId.createDCMotorSystem(DRIVE_GEARBOX, inertia, mechanismGearRatio),
-            DRIVE_GEARBOX);
+                LinearSystemId.createDCMotorSystem(DRIVE_GEARBOX, inertia, mechanismGearRatio),
+                DRIVE_GEARBOX);
         return this;
     }
 
     public MotorIOSim asVelocityControl(double inertia, double mechanismGearRatio) {
         turnSim = new DCMotorSim(
-            LinearSystemId.createDCMotorSystem(TURN_GEARBOX, inertia, mechanismGearRatio),
-            TURN_GEARBOX);
+                LinearSystemId.createDCMotorSystem(TURN_GEARBOX, inertia, mechanismGearRatio),
+                TURN_GEARBOX);
         positionController.enableContinuousInput(-Math.PI, Math.PI);
         return this;
     }
@@ -112,13 +115,21 @@ public class MotorIOSim implements MotorIO {
         positionController.setSetpoint(rotation.getRadians());
     }
 
-    public void setVelocityPIDandFF(double kp, double kd, double kv, double ka, double ks) {
+    public void setMotorPIDandFF(double kp, double kd, double kv, double ka, double ks) {
+        if (isPositionControl) {
+            setPositionPIDandFF(kp, kd, kv, ka, ks);
+        } else {
+            setVelocityIDandFF(kp, kd, kv, ka, ks);
+        }
+    }
+
+    private void setVelocityIDandFF(double kp, double kd, double kv, double ka, double ks) {
         velocityController.setP(kp);
         velocityController.setD(kd);
         DRIVE_KV = kv;
     }
 
-    public void setPositionPIDandFF(double kp, double kd, double kv, double ka, double ks) {
+    private void setPositionPIDandFF(double kp, double kd, double kv, double ka, double ks) {
         velocityController.setP(kp);
         velocityController.setD(kd);
         DRIVE_KV = kv;

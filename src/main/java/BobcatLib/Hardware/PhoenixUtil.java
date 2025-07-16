@@ -11,7 +11,7 @@ public class PhoenixUtil {
       var error = command.get();
       if (error.isOK()) {
         break;
-      } 
+      }
     }
   }
 }

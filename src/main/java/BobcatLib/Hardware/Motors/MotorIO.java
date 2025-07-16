@@ -1,7 +1,7 @@
-package BobcatLib.Hardware;
+package BobcatLib.Hardware.Motors;
 
 import org.littletonrobotics.junction.AutoLog;
-import BobcatLib.Hardware.MotorStateMachine.MotorState;
+import BobcatLib.Hardware.Motors.MotorStateMachine.MotorState;
 
 public interface MotorIO {
   @AutoLog
