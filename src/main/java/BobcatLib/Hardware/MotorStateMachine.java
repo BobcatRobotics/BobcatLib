@@ -3,11 +3,7 @@ package BobcatLib.Hardware;
 public class MotorStateMachine {
 
     public enum MotorState {
-        IDLE,
-        FORWARD,
-        REVERSE,
-        UNKNOWN,
-        ERROR
+        IDLE, FORWARD, REVERSE, UNKNOWN, ERROR
     }
 
     private MotorState currentState;
@@ -26,6 +22,19 @@ public class MotorStateMachine {
         } else {
             currentState = MotorState.ERROR;
         }
+    }
+
+    public MotorState setMotorState(double current) {
+        if (current == 0) {
+            setState(MotorState.IDLE);
+        } else if (current > 0) {
+            setState(MotorState.FORWARD);
+        } else if (current < 0) {
+            setState(MotorState.REVERSE);
+        } else {
+            setState(MotorState.ERROR);
+        }
+        return getCurrentState();
     }
 
     private boolean isValidTransition(MotorState newState) {

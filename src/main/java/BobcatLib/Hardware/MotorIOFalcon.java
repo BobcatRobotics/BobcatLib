@@ -61,22 +61,10 @@ public class MotorIOFalcon implements MotorIO {
     motorCurrent = motor.getStatorCurrent();
 
     state = new MotorStateMachine();
+    state.setMotorState(motorCurrent.getValueAsDouble());
 
-    setMotorState();
   }
 
-  public void setMotorState() {
-    if (motorCurrent.getValueAsDouble() == 0) {
-      state.setState(MotorState.IDLE);
-    } else if (motorCurrent.getValueAsDouble() > 0) {
-      state.setState(MotorState.FORWARD);
-
-    } else if (motorCurrent.getValueAsDouble() < 0) {
-      state.setState(MotorState.REVERSE);
-    } else {
-      state.setState(MotorState.ERROR);
-    }
-  }
 
   @Override
   public void updateInputs(MotorIOInputs inputs) {
@@ -89,7 +77,6 @@ public class MotorIOFalcon implements MotorIO {
     inputs.appliedVolts = motorAppliedVolts.getValueAsDouble();
     inputs.currentAmps = motorCurrent.getValueAsDouble();
 
-    setMotorState();
-    inputs.state = state.getCurrentState();
+    inputs.state = state.setMotorState(motorCurrent.getValueAsDouble());
   }
 }
