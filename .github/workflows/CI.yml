@@ -1,50 +1,51 @@
 name: CI
-
-on: [push, pull_request]
-
+'on':
+  - push
+  - pull_request
 jobs:
   build-docker:
     strategy:
       fail-fast: false
       matrix:
         include:
-          - container: wpilib/roborio-cross-ubuntu:2024-22.04
+          - container: 'wpilib/roborio-cross-ubuntu:2024-22.04'
             artifact-name: Athena
-            build-options: "-Ponlylinuxathena"
-          - container: wpilib/ubuntu-base:22.04
+            build-options: '-Ponlylinuxathena'
+          - container: 'wpilib/ubuntu-base:22.04'
             artifact-name: Linux
-            build-options: ""
-    name: "Build - ${{ matrix.artifact-name }}"
+            build-options: ''
+    name: 'Build - ${{ matrix.artifact-name }}'
     runs-on: ubuntu-latest
-    container: ${{ matrix.container }}
+    container: '${{ matrix.container }}'
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
       - name: Fetch all history and metadata
-        run: |
-          git config --global --add safe.directory /__w/${{ github.event.repository.name }}/${{ github.event.repository.name }}
+        run: >
+          git config --global --add safe.directory /__w/${{
+          github.event.repository.name }}/${{ github.event.repository.name }}
       - name: Fetch all history and metadata
-        run: |
-          git config --global --add safe.directory /__w/${{ github.event.repository.name }}
+        run: >
+          git config --global --add safe.directory /__w/${{
+          github.event.repository.name }}
       - name: Install roboRio toolchain
         run: ./gradlew installRoboRioToolchain
       - name: Build with Gradle
-        run: ./gradlew build --max-workers 1 ${{ matrix.build-options }}
+        run: './gradlew build --max-workers 1 ${{ matrix.build-options }}'
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact-name }}
+          name: '${{ matrix.artifact-name }}'
           path: build/allOutputs
       - name: Generate Javadoc
         run: ./gradlew javadoc
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact-name }}
+          name: '${{ matrix.artifact-name }}'
           path: build/docs
-
   build-host:
-    env: 
+    env:
       MACOSX_DEPLOYMENT_TARGET: 13
     strategy:
       fail-fast: false
@@ -56,8 +57,8 @@ jobs:
           - os: macos-14
             artifact-name: macOS
             architecture: x64
-    name: "Build - ${{ matrix.artifact-name }}"
-    runs-on: ${{ matrix.os }}
+    name: 'Build - ${{ matrix.artifact-name }}'
+    runs-on: '${{ matrix.os }}'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -66,27 +67,28 @@ jobs:
         run: git fetch --prune --unshallow
       - uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
+          distribution: temurin
           java-version: 17
-          architecture: ${{ matrix.architecture }}
+          architecture: '${{ matrix.architecture }}'
       - name: Install roboRio toolchain
         run: ./gradlew installRoboRioToolchain
       - name: Build with Gradle
         run: ./gradlew build -Pbuildalldesktop
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact-name }}
+          name: '${{ matrix.artifact-name }}'
           path: build/allOutputs
-        - name: Generate Javadoc
-          run: ./gradlew javadoc
-        - uses: actions/upload-artifact@v4
-          with:
-            name: ${{ matrix.artifact-name }}
-            path: build/docs
-
+      - name: Generate Javadoc
+        run: ./gradlew javadoc
+      - uses: actions/upload-artifact@v4
+        with:
+          name: '${{ matrix.artifact-name }}'
+          path: build/docs
   combine:
     name: Combine
-    needs: [build-docker, build-host]
+    needs:
+      - build-docker
+      - build-host
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -96,16 +98,18 @@ jobs:
         with:
           path: combiner/products/build/allOutputs
       - name: Flatten Artifacts
-        run: rsync -a --delete combiner/products/build/allOutputs/*/* combiner/products/build/allOutputs/
+        run: >-
+          rsync -a --delete combiner/products/build/allOutputs/*/*
+          combiner/products/build/allOutputs/
       - uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
+          distribution: temurin
           java-version: 17
       - name: Combine
         run: ./gradlew publish -Pthirdparty
         working-directory: combiner
       - name: Generate Javadoc
-        run: mvn javadoc:javadoc
+        run: 'mvn javadoc:javadoc'
       - name: Copy to release folder
         run: |
           mkdir -p ~/releases
