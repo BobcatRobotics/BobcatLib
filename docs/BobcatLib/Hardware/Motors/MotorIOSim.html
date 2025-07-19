@@ -144,11 +144,12 @@ implements <a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors"
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(boolean)" class="member-name-link">MotorIOSim</a><wbr>(boolean&nbsp;isPositionControl)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(BobcatLib.Hardware.Motors.MotorBuilder,BobcatLib.Utils.CANDeviceDetails)" class="member-name-link">MotorIOSim</a><wbr>(<a href="MotorBuilder.html" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a>&nbsp;builder,
+ <a href="../../Utils/CANDeviceDetails.html" title="class in BobcatLib.Utils">CANDeviceDetails</a>&nbsp;device)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(boolean,double,double)" class="member-name-link">MotorIOSim</a><wbr>(boolean&nbsp;isPositionControl,
- double&nbsp;inertia,
- double&nbsp;mechanismGearRatio)</code></div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(BobcatLib.Hardware.Motors.MotorBuilder,BobcatLib.Utils.CANDeviceDetails,double)" class="member-name-link">MotorIOSim</a><wbr>(<a href="MotorBuilder.html" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a>&nbsp;builder,
+ <a href="../../Utils/CANDeviceDetails.html" title="class in BobcatLib.Utils">CANDeviceDetails</a>&nbsp;device,
+ double&nbsp;inertia)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
@@ -165,12 +166,10 @@ implements <a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors"
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MotorIOSim.html" title="class in BobcatLib.Hardware.Motors">MotorIOSim</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#asPositionControl(double,double)" class="member-name-link">asPositionControl</a><wbr>(double&nbsp;inertia,
- double&nbsp;mechanismGearRatio)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#asPositionControl(double)" class="member-name-link">asPositionControl</a><wbr>(double&nbsp;inertia)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MotorIOSim.html" title="class in BobcatLib.Hardware.Motors">MotorIOSim</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#asVelocityControl(double,double)" class="member-name-link">asVelocityControl</a><wbr>(double&nbsp;inertia,
- double&nbsp;mechanismGearRatio)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#asVelocityControl(double)" class="member-name-link">asVelocityControl</a><wbr>(double&nbsp;inertia)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMotorPIDandFF(double,double,double,double,double)" class="member-name-link">setMotorPIDandFF</a><wbr>(double&nbsp;kp,
@@ -322,17 +321,18 @@ implements <a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors"
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(boolean)">
+<section class="detail" id="&lt;init&gt;(BobcatLib.Hardware.Motors.MotorBuilder,BobcatLib.Utils.CANDeviceDetails)">
 <h3>MotorIOSim</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">MotorIOSim</span><wbr><span class="parameters">(boolean&nbsp;isPositionControl)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">MotorIOSim</span><wbr><span class="parameters">(<a href="MotorBuilder.html" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a>&nbsp;builder,
+ <a href="../../Utils/CANDeviceDetails.html" title="class in BobcatLib.Utils">CANDeviceDetails</a>&nbsp;device)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(boolean,double,double)">
+<section class="detail" id="&lt;init&gt;(BobcatLib.Hardware.Motors.MotorBuilder,BobcatLib.Utils.CANDeviceDetails,double)">
 <h3>MotorIOSim</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">MotorIOSim</span><wbr><span class="parameters">(boolean&nbsp;isPositionControl,
- double&nbsp;inertia,
- double&nbsp;mechanismGearRatio)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">MotorIOSim</span><wbr><span class="parameters">(<a href="MotorBuilder.html" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a>&nbsp;builder,
+ <a href="../../Utils/CANDeviceDetails.html" title="class in BobcatLib.Utils">CANDeviceDetails</a>&nbsp;device,
+ double&nbsp;inertia)</span></div>
 </section>
 </li>
 </ul>
@@ -344,17 +344,15 @@ implements <a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors"
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="asPositionControl(double,double)">
+<section class="detail" id="asPositionControl(double)">
 <h3>asPositionControl</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MotorIOSim.html" title="class in BobcatLib.Hardware.Motors">MotorIOSim</a></span>&nbsp;<span class="element-name">asPositionControl</span><wbr><span class="parameters">(double&nbsp;inertia,
- double&nbsp;mechanismGearRatio)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MotorIOSim.html" title="class in BobcatLib.Hardware.Motors">MotorIOSim</a></span>&nbsp;<span class="element-name">asPositionControl</span><wbr><span class="parameters">(double&nbsp;inertia)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="asVelocityControl(double,double)">
+<section class="detail" id="asVelocityControl(double)">
 <h3>asVelocityControl</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MotorIOSim.html" title="class in BobcatLib.Hardware.Motors">MotorIOSim</a></span>&nbsp;<span class="element-name">asVelocityControl</span><wbr><span class="parameters">(double&nbsp;inertia,
- double&nbsp;mechanismGearRatio)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MotorIOSim.html" title="class in BobcatLib.Hardware.Motors">MotorIOSim</a></span>&nbsp;<span class="element-name">asVelocityControl</span><wbr><span class="parameters">(double&nbsp;inertia)</span></div>
 </section>
 </li>
 <li>

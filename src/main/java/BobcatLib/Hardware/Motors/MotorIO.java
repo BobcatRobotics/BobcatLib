@@ -2,7 +2,9 @@ package BobcatLib.Hardware.Motors;
 
 import org.littletonrobotics.junction.AutoLog;
 import BobcatLib.Hardware.Motors.MotorStateMachine.MotorState;
-
+  /**
+   * Motor I/O Interface for logging some initial pieces of data.
+   */
 public interface MotorIO {
   @AutoLog
   public static class MotorIOInputs {
@@ -14,5 +16,8 @@ public interface MotorIO {
     public MotorState state = MotorState.IDLE;
   }
 
+  /**
+   * @param inputs
+   */
   public default void updateInputs(MotorIOInputs inputs) {}
 }

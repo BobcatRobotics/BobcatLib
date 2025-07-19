@@ -1,39 +1,32 @@
 package BobcatLib.Hardware.Motors;
 
-import static BobcatLib.Hardware.PhoenixUtil.*;
+import static BobcatLib.Hardware.PhoenixUtil.tryUntilOk;
+
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.ControlRequest;
-import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
-import com.ctre.phoenix6.controls.PositionVoltage;
-import com.ctre.phoenix6.controls.TorqueCurrentFOC;
-import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
-import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.controls.VoltageOut;
+import com.ctre.phoenix6.controls.*;
 import com.ctre.phoenix6.hardware.ParentDevice;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import BobcatLib.Utils.CANDeviceDetails;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.AngularVelocity;
-import edu.wpi.first.units.measure.Current;
-import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 
-/** IO implementation for Pigeon 2. */
+/**
+ * IO implementation for TalonFX motor using CTRE Phoenix 6 API.
+ * Supports both voltage and torque-current control modes with open/closed-loop control.
+ */
 public class MotorIOTalonFX implements MotorIO {
-  private final TalonFX motor = new TalonFX(0, "");
-  // Inputs from turn motor
+  private final TalonFX motor;
   private final StatusSignal<Angle> relativePosition;
   private final StatusSignal<AngularVelocity> motorVelocity;
   private final StatusSignal<Voltage> motorAppliedVolts;
@@ -42,61 +35,26 @@ public class MotorIOTalonFX implements MotorIO {
   private final TalonFXConfiguration config;
   private final MotorStateMachine state;
 
-  // Voltage control requests
   private final VoltageOut voltageRequest = new VoltageOut(0).withEnableFOC(true);
   private final PositionVoltage positionVoltageRequest = new PositionVoltage(0.0);
-  private final VelocityVoltage velocityVoltageRequest =
-      new VelocityVoltage(0.0).withEnableFOC(true);
-
-  // Torque-current control requests
+  private final VelocityVoltage velocityVoltageRequest = new VelocityVoltage(0.0).withEnableFOC(true);
   private final TorqueCurrentFOC torqueCurrentRequest = new TorqueCurrentFOC(0);
-  private final PositionTorqueCurrentFOC positionTorqueCurrentRequest =
-      new PositionTorqueCurrentFOC(0.0);
-  private final VelocityTorqueCurrentFOC velocityTorqueCurrentRequest =
-      new VelocityTorqueCurrentFOC(0.0);
+  private final PositionTorqueCurrentFOC positionTorqueCurrentRequest = new PositionTorqueCurrentFOC(0.0);
+  private final VelocityTorqueCurrentFOC velocityTorqueCurrentRequest = new VelocityTorqueCurrentFOC(0.0);
 
+  public MotorBuilder builder;
 
-  public boolean isTorqueCurrent = false;
-  public boolean isFOC = false;
-  public boolean isPositionControl = false;
+  /**
+   * Constructs a TalonFX motor IO with settings from the given builder.
+   * @param builder The configuration builder for this motor.
+   */
+  public MotorIOTalonFX(MotorBuilder builder, CANDeviceDetails device) {
+    this.builder = builder;
+    this.motor = new TalonFX(device.id(), device.bus());
+    this.config = builder.build();
 
-
-  private final Slot0Configs motorPID;
-
-  public MotorIOTalonFX(boolean isPositionControl, TalonFXConfiguration motorConfig,
-      double statorCurrentLimit, boolean invertedState, double motorMechanismRatio,
-      Slot0Configs motorPID, int feedbackId, FeedbackSensorSourceValue feedbackSensor,
-      boolean isFeedbackEnabled, boolean isBrake, boolean isTorqueCurrent, boolean isFOC) {
-    this.isPositionControl = isPositionControl;
-    this.isTorqueCurrent = isTorqueCurrent;
-    this.isFOC = isFOC;
-    this.motorPID = motorPID;
-    // Configure drive motor
-    config = motorConfig;
-    config.MotorOutput.NeutralMode = isBrake ? NeutralModeValue.Brake : NeutralModeValue.Coast;
-    config.Slot0 = motorPID;
-    if (isFeedbackEnabled) {
-      config.Feedback.FeedbackRemoteSensorID = feedbackId;
-      config.Feedback.FeedbackSensorSource = switch (feedbackSensor) {
-        case RemoteCANcoder -> FeedbackSensorSourceValue.RemoteCANcoder;
-        case FusedCANcoder -> FeedbackSensorSourceValue.FusedCANcoder;
-        case SyncCANcoder -> FeedbackSensorSourceValue.SyncCANcoder;
-        default -> FeedbackSensorSourceValue.FusedCANcoder;
-      };
-      config.Feedback.SensorToMechanismRatio = motorMechanismRatio;
-    }
-    if (isTorqueCurrent) {
-      config.TorqueCurrent.PeakForwardTorqueCurrent = statorCurrentLimit;
-      config.TorqueCurrent.PeakReverseTorqueCurrent = -statorCurrentLimit;
-    }
-    config.CurrentLimits.StatorCurrentLimit = statorCurrentLimit;
-    config.CurrentLimits.StatorCurrentLimitEnable = true;
-    config.MotorOutput.Inverted =
-        invertedState ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
     tryUntilOk(5, () -> motor.getConfigurator().apply(config, 0.25));
-    // tryUntilOk(5, () -> motor.setPosition(0.0, 0.25));
 
-    // Create drive status signal
     relativePosition = motor.getPosition();
     motorVelocity = motor.getVelocity();
     motorAppliedVolts = motor.getMotorVoltage();
@@ -105,66 +63,85 @@ public class MotorIOTalonFX implements MotorIO {
     state = new MotorStateMachine();
     state.setMotorState(motorCurrent.getValueAsDouble());
 
-    // Configure periodic frames
-    BaseStatusSignal.setUpdateFrequencyForAll(50.0, relativePosition, motorVelocity,
-        motorAppliedVolts, motorCurrent);
+    BaseStatusSignal.setUpdateFrequencyForAll(50.0, relativePosition, motorVelocity, motorAppliedVolts, motorCurrent);
     ParentDevice.optimizeBusUtilizationForAll(motor);
-
   }
 
-
+  /**
+   * Updates the motor's input state for reading by higher-level systems.
+   * @param inputs MotorIOInputs object to populate with sensor data.
+   */
   @Override
   public void updateInputs(MotorIOInputs inputs) {
-    // Update drive inputs
-    var motorStatus = BaseStatusSignal.refreshAll(relativePosition, motorVelocity,
-        motorAppliedVolts, motorCurrent);
+    var motorStatus = BaseStatusSignal.refreshAll(relativePosition, motorVelocity, motorAppliedVolts, motorCurrent);
     inputs.connected = connectedDebounce.calculate(motorStatus.isOK());
     inputs.positionRad = Units.rotationsToRadians(relativePosition.getValueAsDouble());
     inputs.velocityRadPerSec = Units.rotationsToRadians(motorVelocity.getValueAsDouble());
     inputs.appliedVolts = motorAppliedVolts.getValueAsDouble();
     inputs.currentAmps = motorCurrent.getValueAsDouble();
-
     inputs.state = state.setMotorState(motorCurrent.getValueAsDouble());
   }
 
-
+  /**
+   * Runs the motor in open-loop velocity mode.
+   * @param output Output value between -1 and 1.
+   */
   public void setVelocityOpenLoop(double output) {
-    var request = isTorqueCurrent ? torqueCurrentRequest.withOutput(output)
-        : voltageRequest.withOutput(output).withEnableFOC(isFOC);
+    var request = builder.getRequestType() == MotorBuilder.RequestType.TORQUE_CURRENT
+      ? torqueCurrentRequest.withOutput(output)
+      : voltageRequest.withOutput(output).withEnableFOC(builder.isFOC());
     motor.setControl(request);
   }
 
-
+  /**
+   * Runs the motor in open-loop position mode.
+   * @param output Output value between -1 and 1.
+   */
   public void setPositionOpenLoop(double output) {
-    var request = isTorqueCurrent ? torqueCurrentRequest.withOutput(output)
-        : voltageRequest.withOutput(output).withEnableFOC(isFOC);
+    var request = builder.getRequestType() == MotorBuilder.RequestType.TORQUE_CURRENT
+      ? torqueCurrentRequest.withOutput(output)
+      : voltageRequest.withOutput(output).withEnableFOC(builder.isFOC());
     motor.setControl(request);
   }
 
+  /**
+   * Runs the motor in closed-loop velocity mode using radians per second.
+   * @param velocityRadPerSec Target velocity in radians per second.
+   */
   public void setVelocityClosedLoop(double velocityRadPerSec) {
     double velocityRotPerSec = Units.radiansToRotations(velocityRadPerSec);
-
-    var request = isTorqueCurrent ? velocityTorqueCurrentRequest.withVelocity(velocityRotPerSec)
-        : velocityVoltageRequest.withVelocity(velocityRotPerSec).withEnableFOC(isFOC);
-
+    var request = builder.getRequestType() == MotorBuilder.RequestType.TORQUE_CURRENT
+      ? velocityTorqueCurrentRequest.withVelocity(velocityRotPerSec)
+      : velocityVoltageRequest.withVelocity(velocityRotPerSec).withEnableFOC(builder.isFOC());
     motor.setControl(request);
   }
 
+  /**
+   * Runs the motor in closed-loop position mode.
+   * @param rotation Target rotation as a {@link Rotation2d} object.
+   */
   public void setPositionClosedLoop(Rotation2d rotation) {
-    var request =
-        isTorqueCurrent ? positionTorqueCurrentRequest.withPosition(rotation.getRotations())
-            : positionVoltageRequest.withPosition(rotation.getRotations());
-
+    var request = builder.getRequestType() == MotorBuilder.RequestType.TORQUE_CURRENT
+      ? positionTorqueCurrentRequest.withPosition(rotation.getRotations())
+      : positionVoltageRequest.withPosition(rotation.getRotations());
     motor.setControl(request);
   }
 
+  /**
+   * Dynamically updates the motor PID and feedforward gains.
+   * @param kp Proportional gain.
+   * @param kd Derivative gain.
+   * @param kv Velocity feedforward.
+   * @param ka Acceleration feedforward.
+   * @param ks Static feedforward.
+   */
   public void setMotorPIDandFF(double kp, double kd, double kv, double ka, double ks) {
-    motorPID.kP = kp;
-    motorPID.kD = kd;
-    motorPID.kV = kv;
-    motorPID.kA = ka;
-    motorPID.kS = ks;
-    tryUntilOk(5, () -> motor.getConfigurator().apply(motorPID, 0.25));
+    Slot0Configs pid = new Slot0Configs();
+    pid.kP = kp;
+    pid.kD = kd;
+    pid.kV = kv;
+    pid.kA = ka;
+    pid.kS = ks;
+    tryUntilOk(5, () -> motor.getConfigurator().apply(pid, 0.25));
   }
-
 }

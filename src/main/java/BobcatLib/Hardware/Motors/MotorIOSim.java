@@ -3,6 +3,9 @@ package BobcatLib.Hardware.Motors;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import java.net.Authenticator.RequestorType;
+import BobcatLib.Hardware.Motors.MotorBuilder.RequestType;
+import BobcatLib.Utils.CANDeviceDetails;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.LinearSystemId;
@@ -34,32 +37,37 @@ public class MotorIOSim implements MotorIO {
 
     public boolean isPositionControl = false;
 
-    public MotorIOSim(boolean isPositionControl) {
-        this.isPositionControl = isPositionControl;
+    private MotorBuilder builder;
+
+    public MotorIOSim(MotorBuilder builder, CANDeviceDetails device) {
+        this.builder = builder;
+        if( builder.getRequestType() == RequestType.POSITION){
+            this.isPositionControl = true;
+        }
         driveSim = null;
         turnSim = null;
         // Enable wrapping for turn PID
         positionController.enableContinuousInput(-Math.PI, Math.PI);
     }
 
-    public MotorIOSim(boolean isPositionControl, double inertia, double mechanismGearRatio) {
+    public MotorIOSim(MotorBuilder builder, CANDeviceDetails device, double inertia) {
         if (isPositionControl) {
-            asPositionControl(inertia, mechanismGearRatio);
+            asPositionControl(inertia);
         } else {
-            asVelocityControl(inertia, mechanismGearRatio);
+            asVelocityControl(inertia);
         }
     }
 
-    public MotorIOSim asPositionControl(double inertia, double mechanismGearRatio) {
+    public MotorIOSim asPositionControl(double inertia) {
         driveSim = new DCMotorSim(
-                LinearSystemId.createDCMotorSystem(DRIVE_GEARBOX, inertia, mechanismGearRatio),
+                LinearSystemId.createDCMotorSystem(DRIVE_GEARBOX, inertia, builder.build().Feedback.SensorToMechanismRatio),
                 DRIVE_GEARBOX);
         return this;
     }
 
-    public MotorIOSim asVelocityControl(double inertia, double mechanismGearRatio) {
+    public MotorIOSim asVelocityControl(double inertia) {
         turnSim = new DCMotorSim(
-                LinearSystemId.createDCMotorSystem(TURN_GEARBOX, inertia, mechanismGearRatio),
+                LinearSystemId.createDCMotorSystem(TURN_GEARBOX, inertia, builder.build().Feedback.SensorToMechanismRatio),
                 TURN_GEARBOX);
         positionController.enableContinuousInput(-Math.PI, Math.PI);
         return this;
