@@ -78,7 +78,11 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">MotorStateMachine</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">A simple state machine for representing and managing the operational state of a motor.
- States include IDLE, FORWARD, REVERSE, UNKNOWN, ERROR, and STALL.</div>
+ <p>
+ This class tracks the state of the motor and allows transitions between predefined states:
+ <code>IDLE</code>, <code>FORWARD</code>, <code>REVERSE</code>, <code>UNKNOWN</code>, <code>ERROR</code>, and <code>STALL</code>.
+ <p>
+ It provides logic to validate state transitions and determine the current motor state based on current draw.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -94,7 +98,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>static enum&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="MotorStateMachine.MotorState.html" class="type-name-link" title="enum class in BobcatLib.Hardware.Motors">MotorStateMachine.MotorState</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Enumeration of possible motor states.</div>
+<div class="block">Enumeration of possible motor operational states.</div>
 </div>
 </div>
 </section>
@@ -109,7 +113,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">MotorStateMachine</a>()</code></div>
 <div class="col-last even-row-color">
-<div class="block">Creates a new MotorStateMachine with an initial state of <code>UNKNOWN</code>.</div>
+<div class="block">Constructs a new <code>MotorStateMachine</code> instance with an initial state of <a href="MotorStateMachine.MotorState.html#UNKNOWN"><code>MotorStateMachine.MotorState.UNKNOWN</code></a>.</div>
 </div>
 </div>
 </section>
@@ -128,17 +132,17 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors">MotorStateMachine.MotorState</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCurrentState()" class="member-name-link">getCurrentState</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Gets the current state of the motor.</div>
+<div class="block">Returns the current state of the motor.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors">MotorStateMachine.MotorState</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMotorState(double)" class="member-name-link">setMotorState</a><wbr>(double&nbsp;current)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Determines the motor state based on current draw and updates the state machine.</div>
+<div class="block">Automatically updates the state of the motor based on the measured current draw.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setState(BobcatLib.Hardware.Motors.MotorStateMachine.MotorState)" class="member-name-link">setState</a><wbr>(<a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors">MotorStateMachine.MotorState</a>&nbsp;newState)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Sets the state of the motor if the transition is valid.</div>
+<div class="block">Attempts to transition the motor to a new state.</div>
 </div>
 </div>
 </div>
@@ -161,7 +165,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;()">
 <h3>MotorStateMachine</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">MotorStateMachine</span>()</div>
-<div class="block">Creates a new MotorStateMachine with an initial state of <code>UNKNOWN</code>.</div>
+<div class="block">Constructs a new <code>MotorStateMachine</code> instance with an initial state of <a href="MotorStateMachine.MotorState.html#UNKNOWN"><code>MotorStateMachine.MotorState.UNKNOWN</code></a>.</div>
 </section>
 </li>
 </ul>
@@ -176,7 +180,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getCurrentState()">
 <h3>getCurrentState</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors">MotorStateMachine.MotorState</a></span>&nbsp;<span class="element-name">getCurrentState</span>()</div>
-<div class="block">Gets the current state of the motor.</div>
+<div class="block">Returns the current state of the motor.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>The current <a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors"><code>MotorStateMachine.MotorState</code></a>.</dd>
@@ -187,11 +191,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setState(BobcatLib.Hardware.Motors.MotorStateMachine.MotorState)">
 <h3>setState</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setState</span><wbr><span class="parameters">(<a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors">MotorStateMachine.MotorState</a>&nbsp;newState)</span></div>
-<div class="block">Sets the state of the motor if the transition is valid.
- Otherwise, the state is set to <a href="MotorStateMachine.MotorState.html#ERROR"><code>MotorStateMachine.MotorState.ERROR</code></a>.</div>
+<div class="block">Attempts to transition the motor to a new state.
+ <p>
+ If the transition is considered invalid based on the current state,
+ the motor state will be set to <a href="MotorStateMachine.MotorState.html#ERROR"><code>MotorStateMachine.MotorState.ERROR</code></a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>newState</code> - The desired new state.</dd>
+<dd><code>newState</code> - The desired next state.</dd>
 </dl>
 </section>
 </li>
@@ -199,10 +205,16 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setMotorState(double)">
 <h3>setMotorState</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors">MotorStateMachine.MotorState</a></span>&nbsp;<span class="element-name">setMotorState</span><wbr><span class="parameters">(double&nbsp;current)</span></div>
-<div class="block">Determines the motor state based on current draw and updates the state machine.</div>
+<div class="block">Automatically updates the state of the motor based on the measured current draw.
+ <ul>
+   <li>0 current ⇒ <a href="MotorStateMachine.MotorState.html#IDLE"><code>MotorStateMachine.MotorState.IDLE</code></a></li>
+   <li>Positive current ⇒ <a href="MotorStateMachine.MotorState.html#FORWARD"><code>MotorStateMachine.MotorState.FORWARD</code></a></li>
+   <li>Negative current ⇒ <a href="MotorStateMachine.MotorState.html#REVERSE"><code>MotorStateMachine.MotorState.REVERSE</code></a></li>
+ </ul>
+ Any invalid values result in <a href="MotorStateMachine.MotorState.html#ERROR"><code>MotorStateMachine.MotorState.ERROR</code></a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>current</code> - The measured motor current.</dd>
+<dd><code>current</code> - The measured motor current (amps).</dd>
 <dt>Returns:</dt>
 <dd>The updated <a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors"><code>MotorStateMachine.MotorState</code></a>.</dd>
 </dl>

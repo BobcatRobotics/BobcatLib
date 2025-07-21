@@ -77,7 +77,8 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">MotorIO</span></div>
-<div class="block">Motor I/O Interface for logging some initial pieces of data.</div>
+<div class="block">MotorIO defines a hardware abstraction interface for motor input-output operations.
+ It allows motor implementations to provide telemetry data through the <a href="MotorIO.MotorIOInputs.html" title="class in BobcatLib.Hardware.Motors"><code>MotorIO.MotorIOInputs</code></a> class.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -92,7 +93,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static class&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="MotorIO.MotorIOInputs.html" class="type-name-link" title="class in BobcatLib.Hardware.Motors">MotorIO.MotorIOInputs</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Container class for motor telemetry and status inputs.</div>
+</div>
 </div>
 </section>
 </li>
@@ -109,7 +112,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#updateInputs(BobcatLib.Hardware.Motors.MotorIO.MotorIOInputs)" class="member-name-link">updateInputs</a><wbr>(<a href="MotorIO.MotorIOInputs.html" title="class in BobcatLib.Hardware.Motors">MotorIO.MotorIOInputs</a>&nbsp;inputs)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Update the motor input values.</div>
+</div>
 </div>
 </div>
 </div>
@@ -128,9 +133,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="updateInputs(BobcatLib.Hardware.Motors.MotorIO.MotorIOInputs)">
 <h3>updateInputs</h3>
 <div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateInputs</span><wbr><span class="parameters">(<a href="MotorIO.MotorIOInputs.html" title="class in BobcatLib.Hardware.Motors">MotorIO.MotorIOInputs</a>&nbsp;inputs)</span></div>
+<div class="block">Update the motor input values. This method is called periodically to
+ refresh the telemetry data stored in <a href="MotorIO.MotorIOInputs.html" title="class in BobcatLib.Hardware.Motors"><code>MotorIO.MotorIOInputs</code></a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>inputs</code> - </dd>
+<dd><code>inputs</code> - The container to populate with the current motor telemetry data.</dd>
 </dl>
 </section>
 </li>

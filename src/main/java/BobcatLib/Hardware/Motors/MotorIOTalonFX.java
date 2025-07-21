@@ -12,6 +12,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import BobcatLib.Utils.CANDeviceDetails;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -22,10 +23,13 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 
 /**
- * IO implementation for TalonFX motor using CTRE Phoenix 6 API.
- * Supports both voltage and torque-current control modes with open/closed-loop control.
+ * Hardware I/O implementation for the CTRE TalonFX motor using the Phoenix 6 API.
+ * <p>
+ * This class handles motor input and output functionality, including telemetry updates
+ * and setting control modes (open/closed-loop, voltage or torque-current).
  */
 public class MotorIOTalonFX implements MotorIO {
+
   private final TalonFX motor;
   private final StatusSignal<Angle> relativePosition;
   private final StatusSignal<AngularVelocity> motorVelocity;
@@ -35,6 +39,7 @@ public class MotorIOTalonFX implements MotorIO {
   private final TalonFXConfiguration config;
   private final MotorStateMachine state;
 
+  // Control mode objects reused for performance
   private final VoltageOut voltageRequest = new VoltageOut(0).withEnableFOC(true);
   private final PositionVoltage positionVoltageRequest = new PositionVoltage(0.0);
   private final VelocityVoltage velocityVoltageRequest = new VelocityVoltage(0.0).withEnableFOC(true);
@@ -42,19 +47,24 @@ public class MotorIOTalonFX implements MotorIO {
   private final PositionTorqueCurrentFOC positionTorqueCurrentRequest = new PositionTorqueCurrentFOC(0.0);
   private final VelocityTorqueCurrentFOC velocityTorqueCurrentRequest = new VelocityTorqueCurrentFOC(0.0);
 
+  /** Builder that defines this motor’s behavior and control mode */
   public MotorBuilder builder;
 
   /**
-   * Constructs a TalonFX motor IO with settings from the given builder.
-   * @param builder The configuration builder for this motor.
+   * Constructs a TalonFX motor IO interface using the provided builder and CAN device details.
+   *
+   * @param builder Configuration builder with motor control settings.
+   * @param device  CAN ID and bus info for the TalonFX device.
    */
   public MotorIOTalonFX(MotorBuilder builder, CANDeviceDetails device) {
     this.builder = builder;
     this.motor = new TalonFX(device.id(), device.bus());
     this.config = builder.build();
 
+    // Apply initial configuration with retry logic
     tryUntilOk(5, () -> motor.getConfigurator().apply(config, 0.25));
 
+    // Get references to sensor signals
     relativePosition = motor.getPosition();
     motorVelocity = motor.getVelocity();
     motorAppliedVolts = motor.getMotorVoltage();
@@ -63,17 +73,20 @@ public class MotorIOTalonFX implements MotorIO {
     state = new MotorStateMachine();
     state.setMotorState(motorCurrent.getValueAsDouble());
 
+    // Optimize CAN bus usage
     BaseStatusSignal.setUpdateFrequencyForAll(50.0, relativePosition, motorVelocity, motorAppliedVolts, motorCurrent);
     ParentDevice.optimizeBusUtilizationForAll(motor);
   }
 
   /**
-   * Updates the motor's input state for reading by higher-level systems.
-   * @param inputs MotorIOInputs object to populate with sensor data.
+   * Periodically updates input signals from the motor for use in system-level logic.
+   *
+   * @param inputs A container class used to store telemetry data from the motor.
    */
   @Override
   public void updateInputs(MotorIOInputs inputs) {
     var motorStatus = BaseStatusSignal.refreshAll(relativePosition, motorVelocity, motorAppliedVolts, motorCurrent);
+
     inputs.connected = connectedDebounce.calculate(motorStatus.isOK());
     inputs.positionRad = Units.rotationsToRadians(relativePosition.getValueAsDouble());
     inputs.velocityRadPerSec = Units.rotationsToRadians(motorVelocity.getValueAsDouble());
@@ -83,57 +96,64 @@ public class MotorIOTalonFX implements MotorIO {
   }
 
   /**
-   * Runs the motor in open-loop velocity mode.
-   * @param output Output value between -1 and 1.
+   * Sets the motor to open-loop velocity control.
+   *
+   * @param output The desired output voltage or current (in range [-1.0, 1.0]).
    */
   public void setVelocityOpenLoop(double output) {
     var request = builder.getRequestType() == MotorBuilder.RequestType.TORQUE_CURRENT
-      ? torqueCurrentRequest.withOutput(output)
-      : voltageRequest.withOutput(output).withEnableFOC(builder.isFOC());
+        ? torqueCurrentRequest.withOutput(output)
+        : voltageRequest.withOutput(output).withEnableFOC(builder.isFOC());
     motor.setControl(request);
   }
 
   /**
-   * Runs the motor in open-loop position mode.
-   * @param output Output value between -1 and 1.
+   * Sets the motor to open-loop position control (manual voltage).
+   *
+   * @param output The desired output voltage or current (in range [-1.0, 1.0]).
    */
   public void setPositionOpenLoop(double output) {
     var request = builder.getRequestType() == MotorBuilder.RequestType.TORQUE_CURRENT
-      ? torqueCurrentRequest.withOutput(output)
-      : voltageRequest.withOutput(output).withEnableFOC(builder.isFOC());
+        ? torqueCurrentRequest.withOutput(output)
+        : voltageRequest.withOutput(output).withEnableFOC(builder.isFOC());
     motor.setControl(request);
   }
 
   /**
-   * Runs the motor in closed-loop velocity mode using radians per second.
-   * @param velocityRadPerSec Target velocity in radians per second.
+   * Runs the motor in closed-loop velocity control mode using the internal velocity PID controller.
+   *
+   * @param velocityRadPerSec The desired velocity in radians per second.
    */
   public void setVelocityClosedLoop(double velocityRadPerSec) {
     double velocityRotPerSec = Units.radiansToRotations(velocityRadPerSec);
     var request = builder.getRequestType() == MotorBuilder.RequestType.TORQUE_CURRENT
-      ? velocityTorqueCurrentRequest.withVelocity(velocityRotPerSec)
-      : velocityVoltageRequest.withVelocity(velocityRotPerSec).withEnableFOC(builder.isFOC());
+        ? velocityTorqueCurrentRequest.withVelocity(velocityRotPerSec)
+        : velocityVoltageRequest.withVelocity(velocityRotPerSec).withEnableFOC(builder.isFOC());
     motor.setControl(request);
   }
 
   /**
-   * Runs the motor in closed-loop position mode.
-   * @param rotation Target rotation as a {@link Rotation2d} object.
+   * Runs the motor in closed-loop position control mode using the internal position PID controller.
+   *
+   * @param rotation The desired target position as a {@link Rotation2d} object.
    */
   public void setPositionClosedLoop(Rotation2d rotation) {
     var request = builder.getRequestType() == MotorBuilder.RequestType.TORQUE_CURRENT
-      ? positionTorqueCurrentRequest.withPosition(rotation.getRotations())
-      : positionVoltageRequest.withPosition(rotation.getRotations());
+        ? positionTorqueCurrentRequest.withPosition(rotation.getRotations())
+        : positionVoltageRequest.withPosition(rotation.getRotations());
     motor.setControl(request);
   }
 
   /**
-   * Dynamically updates the motor PID and feedforward gains.
+   * Dynamically updates the motor's PID and feedforward gains during runtime.
+   * <p>
+   * This is useful for live tuning.
+   *
    * @param kp Proportional gain.
    * @param kd Derivative gain.
-   * @param kv Velocity feedforward.
-   * @param ka Acceleration feedforward.
-   * @param ks Static feedforward.
+   * @param kv Velocity feedforward gain.
+   * @param ka Acceleration feedforward gain.
+   * @param ks Static feedforward gain.
    */
   public void setMotorPIDandFF(double kp, double kd, double kv, double ka, double ks) {
     Slot0Configs pid = new Slot0Configs();
@@ -142,6 +162,7 @@ public class MotorIOTalonFX implements MotorIO {
     pid.kV = kv;
     pid.kA = ka;
     pid.kS = ks;
+
     tryUntilOk(5, () -> motor.getConfigurator().apply(pid, 0.25));
   }
 }

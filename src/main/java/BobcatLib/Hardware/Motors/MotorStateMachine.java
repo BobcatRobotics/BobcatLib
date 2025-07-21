@@ -2,33 +2,48 @@ package BobcatLib.Hardware.Motors;
 
 /**
  * A simple state machine for representing and managing the operational state of a motor.
- * States include IDLE, FORWARD, REVERSE, UNKNOWN, ERROR, and STALL.
+ * <p>
+ * This class tracks the state of the motor and allows transitions between predefined states:
+ * {@code IDLE}, {@code FORWARD}, {@code REVERSE}, {@code UNKNOWN}, {@code ERROR}, and {@code STALL}.
+ * <p>
+ * It provides logic to validate state transitions and determine the current motor state based on current draw.
  */
 public class MotorStateMachine {
 
     /**
-     * Enumeration of possible motor states.
+     * Enumeration of possible motor operational states.
      */
     public enum MotorState {
-        IDLE,      // Motor is not moving
-        FORWARD,   // Motor is moving in the forward direction
-        REVERSE,   // Motor is moving in the reverse direction
-        UNKNOWN,   // Initial or unrecognized state
-        ERROR,     // Invalid transition or state error
-        STALL      // Motor is stalled 
+        /** Motor is not moving or drawing current */
+        IDLE,
+
+        /** Motor is moving in the forward direction */
+        FORWARD,
+
+        /** Motor is moving in the reverse direction */
+        REVERSE,
+
+        /** Initial or undefined state */
+        UNKNOWN,
+
+        /** State machine encountered an invalid transition */
+        ERROR,
+
+        /** Motor is stalled (not currently settable via this implementation) */
+        STALL
     }
 
     private MotorState currentState;
 
     /**
-     * Creates a new MotorStateMachine with an initial state of {@code UNKNOWN}.
+     * Constructs a new {@code MotorStateMachine} instance with an initial state of {@link MotorState#UNKNOWN}.
      */
     public MotorStateMachine() {
         this.currentState = MotorState.UNKNOWN;
     }
 
     /**
-     * Gets the current state of the motor.
+     * Returns the current state of the motor.
      *
      * @return The current {@link MotorState}.
      */
@@ -37,10 +52,12 @@ public class MotorStateMachine {
     }
 
     /**
-     * Sets the state of the motor if the transition is valid.
-     * Otherwise, the state is set to {@link MotorState#ERROR}.
+     * Attempts to transition the motor to a new state.
+     * <p>
+     * If the transition is considered invalid based on the current state,
+     * the motor state will be set to {@link MotorState#ERROR}.
      *
-     * @param newState The desired new state.
+     * @param newState The desired next state.
      */
     public void setState(MotorState newState) {
         if (isValidTransition(newState)) {
@@ -51,9 +68,15 @@ public class MotorStateMachine {
     }
 
     /**
-     * Determines the motor state based on current draw and updates the state machine.
+     * Automatically updates the state of the motor based on the measured current draw.
+     * <ul>
+     *   <li>0 current ⇒ {@link MotorState#IDLE}</li>
+     *   <li>Positive current ⇒ {@link MotorState#FORWARD}</li>
+     *   <li>Negative current ⇒ {@link MotorState#REVERSE}</li>
+     * </ul>
+     * Any invalid values result in {@link MotorState#ERROR}.
      *
-     * @param current The measured motor current.
+     * @param current The measured motor current (amps).
      * @return The updated {@link MotorState}.
      */
     public MotorState setMotorState(double current) {
@@ -70,9 +93,11 @@ public class MotorStateMachine {
     }
 
     /**
-     * Validates whether a state transition is allowed from the current state.
+     * Checks if a transition to the given state is valid from the current state.
+     * <p>
+     * This is a simple rule-based transition model designed to prevent invalid or unexpected changes.
      *
-     * @param newState The state to transition to.
+     * @param newState The target state.
      * @return {@code true} if the transition is allowed, {@code false} otherwise.
      */
     private boolean isValidTransition(MotorState newState) {

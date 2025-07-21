@@ -87,7 +87,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public static enum </span><span class="element-name type-name-label">MotorStateMachine.MotorState</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors">MotorStateMachine.MotorState</a>&gt;</span></div>
-<div class="block">Enumeration of possible motor states.</div>
+<div class="block">Enumeration of possible motor operational states.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -109,17 +109,29 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ERROR" class="member-name-link">ERROR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">State machine encountered an invalid transition</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#FORWARD" class="member-name-link">FORWARD</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Motor is moving in the forward direction</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#IDLE" class="member-name-link">IDLE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Motor is not moving or drawing current</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#REVERSE" class="member-name-link">REVERSE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Motor is moving in the reverse direction</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#STALL" class="member-name-link">STALL</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Motor is stalled (not currently settable via this implementation)</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UNKNOWN" class="member-name-link">UNKNOWN</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Initial or undefined state</div>
+</div>
 </div>
 </section>
 </li>
@@ -169,36 +181,42 @@ the order they are declared.</div>
 <section class="detail" id="IDLE">
 <h3>IDLE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors">MotorStateMachine.MotorState</a></span>&nbsp;<span class="element-name">IDLE</span></div>
+<div class="block">Motor is not moving or drawing current</div>
 </section>
 </li>
 <li>
 <section class="detail" id="FORWARD">
 <h3>FORWARD</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors">MotorStateMachine.MotorState</a></span>&nbsp;<span class="element-name">FORWARD</span></div>
+<div class="block">Motor is moving in the forward direction</div>
 </section>
 </li>
 <li>
 <section class="detail" id="REVERSE">
 <h3>REVERSE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors">MotorStateMachine.MotorState</a></span>&nbsp;<span class="element-name">REVERSE</span></div>
+<div class="block">Motor is moving in the reverse direction</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNKNOWN">
 <h3>UNKNOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors">MotorStateMachine.MotorState</a></span>&nbsp;<span class="element-name">UNKNOWN</span></div>
+<div class="block">Initial or undefined state</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ERROR">
 <h3>ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors">MotorStateMachine.MotorState</a></span>&nbsp;<span class="element-name">ERROR</span></div>
+<div class="block">State machine encountered an invalid transition</div>
 </section>
 </li>
 <li>
 <section class="detail" id="STALL">
 <h3>STALL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors">MotorStateMachine.MotorState</a></span>&nbsp;<span class="element-name">STALL</span></div>
+<div class="block">Motor is stalled (not currently settable via this implementation)</div>
 </section>
 </li>
 </ul>

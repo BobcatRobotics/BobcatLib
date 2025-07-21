@@ -77,6 +77,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public static class </span><span class="element-name type-name-label">MotorIO.MotorIOInputs</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block">Container class for motor telemetry and status inputs.
+ This class is automatically logged using the <code>AutoLog</code> annotation.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -91,22 +93,34 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>double</code></div>
 <div class="col-second even-row-color"><code><a href="#appliedVolts" class="member-name-link">appliedVolts</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Voltage applied to the motor in volts.</div>
+</div>
 <div class="col-first odd-row-color"><code>boolean</code></div>
 <div class="col-second odd-row-color"><code><a href="#connected" class="member-name-link">connected</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Whether the motor is connected and responsive.</div>
+</div>
 <div class="col-first even-row-color"><code>double</code></div>
 <div class="col-second even-row-color"><code><a href="#currentAmps" class="member-name-link">currentAmps</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Current drawn by the motor in amps.</div>
+</div>
 <div class="col-first odd-row-color"><code>double</code></div>
 <div class="col-second odd-row-color"><code><a href="#positionRad" class="member-name-link">positionRad</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Position of the motor in radians.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors">MotorStateMachine.MotorState</a></code></div>
 <div class="col-second even-row-color"><code><a href="#state" class="member-name-link">state</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Current state of the motor, as defined by <a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors"><code>MotorStateMachine.MotorState</code></a>.</div>
+</div>
 <div class="col-first odd-row-color"><code>double</code></div>
 <div class="col-second odd-row-color"><code><a href="#velocityRadPerSec" class="member-name-link">velocityRadPerSec</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Velocity of the motor in radians per second.</div>
+</div>
 </div>
 </section>
 </li>
@@ -145,36 +159,42 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="connected">
 <h3>connected</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">connected</span></div>
+<div class="block">Whether the motor is connected and responsive.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="positionRad">
 <h3>positionRad</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">positionRad</span></div>
+<div class="block">Position of the motor in radians.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="velocityRadPerSec">
 <h3>velocityRadPerSec</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">velocityRadPerSec</span></div>
+<div class="block">Velocity of the motor in radians per second.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="appliedVolts">
 <h3>appliedVolts</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">appliedVolts</span></div>
+<div class="block">Voltage applied to the motor in volts.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="currentAmps">
 <h3>currentAmps</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">currentAmps</span></div>
+<div class="block">Current drawn by the motor in amps.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="state">
 <h3>state</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors">MotorStateMachine.MotorState</a></span>&nbsp;<span class="element-name">state</span></div>
+<div class="block">Current state of the motor, as defined by <a href="MotorStateMachine.MotorState.html" title="enum class in BobcatLib.Hardware.Motors"><code>MotorStateMachine.MotorState</code></a>.</div>
 </section>
 </li>
 </ul>
