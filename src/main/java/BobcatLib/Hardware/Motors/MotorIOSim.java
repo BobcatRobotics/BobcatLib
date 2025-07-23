@@ -25,7 +25,7 @@ public class MotorIOSim implements MotorIO {
     public static final double DRIVE_KD = 0.0;
 
     /** Static feedforward constant */
-    public static final double DRIVE_KS = 0.0;
+    public static final double DRIVE_KS = 0.1;
 
     /** Rotational velocity feedforward constant */
     public static final double DRIVE_KV_ROT = 0.0;
@@ -63,6 +63,10 @@ public class MotorIOSim implements MotorIO {
 
     private MotorBuilder builder;
 
+
+  private final MotorStateMachine state;
+
+
     /**
      * Constructs a new MotorIOSim instance using the provided builder and device info.
      *
@@ -74,9 +78,24 @@ public class MotorIOSim implements MotorIO {
         if (builder.getRequestType() == RequestType.POSITION) {
             this.isPositionControl = true;
         }
-        driveSim = null;
-        turnSim = null;
+        driveSim =
+        new DCMotorSim(
+            LinearSystemId.createDCMotorSystem(
+                DRIVE_GEARBOX, 0.025, builder.build().Feedback.SensorToMechanismRatio),
+            DRIVE_GEARBOX);
+    turnSim =
+        new DCMotorSim(
+            LinearSystemId.createDCMotorSystem(
+                TURN_GEARBOX, 0.004, builder.build().Feedback.SensorToMechanismRatio),
+            TURN_GEARBOX);
+
         positionController.enableContinuousInput(-Math.PI, Math.PI);
+
+
+        state = new MotorStateMachine();
+        state.setMotorState(0);
+
+
     }
 
     /**
@@ -92,6 +111,9 @@ public class MotorIOSim implements MotorIO {
         } else {
             asVelocityControl(inertia);
         }
+
+        state = new MotorStateMachine();
+        state.setMotorState(0);
     }
 
     /**
@@ -153,6 +175,7 @@ public class MotorIOSim implements MotorIO {
         inputs.velocityRadPerSec = driveSim.getAngularVelocityRadPerSec();
         inputs.appliedVolts = driveAppliedVolts;
         inputs.currentAmps = Math.abs(driveSim.getCurrentDrawAmps());
+        inputs.state = state.setMotorState(inputs.currentAmps);
     }
 
     /**

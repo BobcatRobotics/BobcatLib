@@ -2,4 +2,4 @@
 ./gradlew installRoboRIOToolchain
 ./gradlew :spotlessApply
 ./gradlew publish
-cp -rf build/repos/releases/BobcatLib BobcatLib/repos/
+cp -rf BobcatLib/repos/BobcatLib/BobcatLib-java ~/wpilib/2025/maven/BobcatLib

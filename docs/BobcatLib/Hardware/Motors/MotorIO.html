@@ -111,6 +111,16 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#setPositionClosedLoop(edu.wpi.first.math.geometry.Rotation2d)" class="member-name-link">setPositionClosedLoop</a><wbr>(<a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Rotation2d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link">Rotation2d</a>&nbsp;rotation)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Runs the motor in closed-loop position control mode using the internal position PID controller.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#setVelocityClosedLoop(double)" class="member-name-link">setVelocityClosedLoop</a><wbr>(double&nbsp;velocityRadPerSec)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Runs the motor in closed-loop velocity control mode using the internal velocity PID controller.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#updateInputs(BobcatLib.Hardware.Motors.MotorIO.MotorIOInputs)" class="member-name-link">updateInputs</a><wbr>(<a href="MotorIO.MotorIOInputs.html" title="class in BobcatLib.Hardware.Motors">MotorIO.MotorIOInputs</a>&nbsp;inputs)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
 <div class="block">Update the motor input values.</div>
@@ -138,6 +148,28 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>inputs</code> - The container to populate with the current motor telemetry data.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setVelocityClosedLoop(double)">
+<h3>setVelocityClosedLoop</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setVelocityClosedLoop</span><wbr><span class="parameters">(double&nbsp;velocityRadPerSec)</span></div>
+<div class="block">Runs the motor in closed-loop velocity control mode using the internal velocity PID controller.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>velocityRadPerSec</code> - The desired velocity in radians per second.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setPositionClosedLoop(edu.wpi.first.math.geometry.Rotation2d)">
+<h3>setPositionClosedLoop</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setPositionClosedLoop</span><wbr><span class="parameters">(<a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Rotation2d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link">Rotation2d</a>&nbsp;rotation)</span></div>
+<div class="block">Runs the motor in closed-loop position control mode using the internal position PID controller.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>rotation</code> - The desired target position as a <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Rotation2d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link"><code>Rotation2d</code></a> object.</dd>
 </dl>
 </section>
 </li>

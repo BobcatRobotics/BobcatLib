@@ -1,7 +1,9 @@
 package BobcatLib.Hardware.Motors;
 
+import org.dyn4j.geometry.Rotation;
 import org.littletonrobotics.junction.AutoLog;
 import BobcatLib.Hardware.Motors.MotorStateMachine.MotorState;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 /**
  * MotorIO defines a hardware abstraction interface for motor input-output operations.
@@ -41,4 +43,19 @@ public interface MotorIO {
    * @param inputs The container to populate with the current motor telemetry data.
    */
   public default void updateInputs(MotorIOInputs inputs) {}
+
+    /**
+   * Runs the motor in closed-loop velocity control mode using the internal velocity PID controller.
+   *
+   * @param velocityRadPerSec The desired velocity in radians per second.
+   */
+  public default void setVelocityClosedLoop(double velocityRadPerSec) {}
+
+    /**
+   * Runs the motor in closed-loop position control mode using the internal position PID controller.
+   *
+   * @param rotation The desired target position as a {@link Rotation2d} object.
+   */
+  public default void setPositionClosedLoop(Rotation2d rotation) {}
+
 }

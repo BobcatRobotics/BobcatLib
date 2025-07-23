@@ -64,7 +64,7 @@ public class MotorBuilder {
      * @param supplyCurrentLimit  supply current limit in amps
      * @param isFOC               true to enable Field-Oriented Control
      */
-    private MotorBuilder(RequestType requestType, boolean neutralBrake, boolean ccwPositive,
+    public MotorBuilder(RequestType requestType, boolean neutralBrake, boolean ccwPositive,
                          double motorToMechRatio, double statorCurrentLimit,
                          double supplyCurrentLimit, boolean isFOC) {
         this.requestType = requestType;

@@ -67,16 +67,6 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:B">B</h2>
 <dl class="index">
-<dt><a href="BobcatLib/package-summary.html">BobcatLib</a> - package BobcatLib</dt>
-<dd>&nbsp;</dd>
-<dt><a href="BobcatLib/BobcatLib.html" class="type-name-link" title="class in BobcatLib">BobcatLib</a> - Class in <a href="BobcatLib/package-summary.html">BobcatLib</a></dt>
-<dd>
-<div class="block">Main Class</div>
-</dd>
-<dt><a href="BobcatLib/BobcatLib.html#%3Cinit%3E()" class="member-name-link">BobcatLib()</a> - Constructor for class BobcatLib.<a href="BobcatLib/BobcatLib.html" title="class in BobcatLib">BobcatLib</a></dt>
-<dd>
-<div class="block">Main Class Constructor and sends version.</div>
-</dd>
 <dt><a href="BobcatLib/Hardware/package-summary.html">BobcatLib.Hardware</a> - package BobcatLib.Hardware</dt>
 <dd>&nbsp;</dd>
 <dt><a href="BobcatLib/Hardware/Motors/package-summary.html">BobcatLib.Hardware.Motors</a> - package BobcatLib.Hardware.Motors</dt>
@@ -213,6 +203,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="BobcatLib/Hardware/Motors/MotorBuilder.html#getForwardLimit()" class="member-name-link">getForwardLimit()</a> - Method in class BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorBuilder.html" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="BobcatLib/Hardware/Motors/MotorBase.html#getPosition()" class="member-name-link">getPosition()</a> - Method in class BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorBase.html" title="class in BobcatLib.Hardware.Motors">MotorBase</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="BobcatLib/Hardware/Motors/MotorBuilder.html#getRequestType()" class="member-name-link">getRequestType()</a> - Method in class BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorBuilder.html" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="BobcatLib/Hardware/Motors/MotorBuilder.html#getReverseLimit()" class="member-name-link">getReverseLimit()</a> - Method in class BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorBuilder.html" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a></dt>
@@ -221,6 +213,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Returns the Slot0Configs associated with this PidControllerWrapper.</div>
 </dd>
+<dt><a href="BobcatLib/Hardware/Motors/MotorBase.html#getVelocity()" class="member-name-link">getVelocity()</a> - Method in class BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorBase.html" title="class in BobcatLib.Hardware.Motors">MotorBase</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="BobcatLib/Utils/CANDeviceDetails.Manufacturer.html#Grapple" class="member-name-link">Grapple</a> - Enum constant in enum class BobcatLib.Utils.<a href="BobcatLib/Utils/CANDeviceDetails.Manufacturer.html" title="enum class in BobcatLib.Utils">CANDeviceDetails.Manufacturer</a></dt>
 <dd>
 <div class="block">Grapple vendor</div>
@@ -260,10 +254,18 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Returns the value of the <code>manufacturer</code> record component.</div>
 </dd>
+<dt><a href="BobcatLib/Hardware/Motors/MotorBase.html" class="type-name-link" title="class in BobcatLib.Hardware.Motors">MotorBase</a> - Class in <a href="BobcatLib/Hardware/Motors/package-summary.html">BobcatLib.Hardware.Motors</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="BobcatLib/Hardware/Motors/MotorBase.html#%3Cinit%3E(BobcatLib.Hardware.Motors.MotorIO,java.lang.String)" class="member-name-link">MotorBase(MotorIO, String)</a> - Constructor for class BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorBase.html" title="class in BobcatLib.Hardware.Motors">MotorBase</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="BobcatLib/Hardware/Motors/MotorBuilder.html" class="type-name-link" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a> - Class in <a href="BobcatLib/Hardware/Motors/package-summary.html">BobcatLib.Hardware.Motors</a></dt>
 <dd>
 <div class="block">A builder class for configuring and generating a <a href="https://api.ctr-electronics.com/phoenix6/release/java/com/ctre/phoenix6/configs/TalonFXConfiguration.html" title="class or interface in com.ctre.phoenix6.configs" class="external-link"><code>TalonFXConfiguration</code></a>
  for CTRE TalonFX motor controllers.</div>
+</dd>
+<dt><a href="BobcatLib/Hardware/Motors/MotorBuilder.html#%3Cinit%3E(BobcatLib.Hardware.Motors.MotorBuilder.RequestType,boolean,boolean,double,double,double,boolean)" class="member-name-link">MotorBuilder(MotorBuilder.RequestType, boolean, boolean, double, double, double, boolean)</a> - Constructor for class BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorBuilder.html" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a></dt>
+<dd>
+<div class="block">Private constructor for required parameters.</div>
 </dd>
 <dt><a href="BobcatLib/Hardware/Motors/MotorBuilder.FeedbackSensorType.html" class="type-name-link" title="enum class in BobcatLib.Hardware.Motors">MotorBuilder.FeedbackSensorType</a> - Enum Class in <a href="BobcatLib/Hardware/Motors/package-summary.html">BobcatLib.Hardware.Motors</a></dt>
 <dd>
@@ -329,6 +331,8 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:P">P</h2>
 <dl class="index">
+<dt><a href="BobcatLib/Hardware/Motors/MotorBase.html#periodic()" class="member-name-link">periodic()</a> - Method in class BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorBase.html" title="class in BobcatLib.Hardware.Motors">MotorBase</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="BobcatLib/Hardware/PhoenixUtil.html" class="type-name-link" title="class in BobcatLib.Hardware">PhoenixUtil</a> - Class in <a href="BobcatLib/Hardware/package-summary.html">BobcatLib.Hardware</a></dt>
 <dd>
 <div class="block">Phoenix utility too attempt to apply settings a given number of times.</div>
@@ -393,6 +397,15 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Automatically updates the state of the motor based on the measured current draw.</div>
 </dd>
+<dt><a href="BobcatLib/Hardware/Motors/MotorBase.html#setPositionClosedLoop(edu.wpi.first.math.geometry.Rotation2d)" class="member-name-link">setPositionClosedLoop(Rotation2d)</a> - Method in class BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorBase.html" title="class in BobcatLib.Hardware.Motors">MotorBase</a></dt>
+<dd>
+<div class="block">Runs the motor in closed-loop position control mode using the internal position PID
+ controller.</div>
+</dd>
+<dt><a href="BobcatLib/Hardware/Motors/MotorIO.html#setPositionClosedLoop(edu.wpi.first.math.geometry.Rotation2d)" class="member-name-link">setPositionClosedLoop(Rotation2d)</a> - Method in interface BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorIO.html" title="interface in BobcatLib.Hardware.Motors">MotorIO</a></dt>
+<dd>
+<div class="block">Runs the motor in closed-loop position control mode using the internal position PID controller.</div>
+</dd>
 <dt><a href="BobcatLib/Hardware/Motors/MotorIOSim.html#setPositionClosedLoop(edu.wpi.first.math.geometry.Rotation2d)" class="member-name-link">setPositionClosedLoop(Rotation2d)</a> - Method in class BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorIOSim.html" title="class in BobcatLib.Hardware.Motors">MotorIOSim</a></dt>
 <dd>
 <div class="block">Enables closed-loop position control to reach the desired rotation.</div>
@@ -408,6 +421,15 @@ loadScripts(document, 'script');</script>
 <dt><a href="BobcatLib/Hardware/Motors/MotorStateMachine.html#setState(BobcatLib.Hardware.Motors.MotorStateMachine.MotorState)" class="member-name-link">setState(MotorStateMachine.MotorState)</a> - Method in class BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorStateMachine.html" title="class in BobcatLib.Hardware.Motors">MotorStateMachine</a></dt>
 <dd>
 <div class="block">Attempts to transition the motor to a new state.</div>
+</dd>
+<dt><a href="BobcatLib/Hardware/Motors/MotorBase.html#setVelocityClosedLoop(double)" class="member-name-link">setVelocityClosedLoop(double)</a> - Method in class BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorBase.html" title="class in BobcatLib.Hardware.Motors">MotorBase</a></dt>
+<dd>
+<div class="block">Runs the motor in closed-loop velocity control mode using the internal velocity PID
+ controller.</div>
+</dd>
+<dt><a href="BobcatLib/Hardware/Motors/MotorIO.html#setVelocityClosedLoop(double)" class="member-name-link">setVelocityClosedLoop(double)</a> - Method in interface BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorIO.html" title="interface in BobcatLib.Hardware.Motors">MotorIO</a></dt>
+<dd>
+<div class="block">Runs the motor in closed-loop velocity control mode using the internal velocity PID controller.</div>
 </dd>
 <dt><a href="BobcatLib/Hardware/Motors/MotorIOSim.html#setVelocityClosedLoop(double)" class="member-name-link">setVelocityClosedLoop(double)</a> - Method in class BobcatLib.Hardware.Motors.<a href="BobcatLib/Hardware/Motors/MotorIOSim.html" title="class in BobcatLib.Hardware.Motors">MotorIOSim</a></dt>
 <dd>
