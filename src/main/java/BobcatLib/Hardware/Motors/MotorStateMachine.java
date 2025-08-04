@@ -70,9 +70,9 @@ public class MotorStateMachine {
     /**
      * Automatically updates the state of the motor based on the measured current draw.
      * <ul>
-     *   <li>0 current ⇒ {@link MotorState#IDLE}</li>
-     *   <li>Positive current ⇒ {@link MotorState#FORWARD}</li>
-     *   <li>Negative current ⇒ {@link MotorState#REVERSE}</li>
+     *   <li>0 current {@link MotorState#IDLE}</li>
+     *   <li>Positive current {@link MotorState#FORWARD}</li>
+     *   <li>Negative current {@link MotorState#REVERSE}</li>
      * </ul>
      * Any invalid values result in {@link MotorState#ERROR}.
      *
