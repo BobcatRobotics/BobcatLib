@@ -111,7 +111,7 @@ jobs:
       - name: List outputs folder
         run: |
           echo "Contents of build/outputs directory:"
-          ls -R build/outputs || true
+          ls -R build/* || true
         working-directory: combiner
       - name: Copy to release folder
         run: |
