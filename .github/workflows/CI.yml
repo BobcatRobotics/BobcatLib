@@ -108,16 +108,7 @@ jobs:
       - name: Combine
         run: ./gradlew publish -Pthirdparty
         working-directory: combiner
-      - name: List outputs folder
-        run: |
-          echo "Contents of build/outputs directory:"
-          ls -R build/* || true
-        working-directory: combiner
-      - name: Copy to release folder
-        run: |
-          mkdir -p ~/releases
-          cp -r build/docs/* ~/releases/
       - uses: actions/upload-artifact@v4
         with:
           name: Maven
-          path: ~/releases
+          path: ~/build
