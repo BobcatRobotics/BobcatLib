@@ -1,14 +1,25 @@
 package BobcatLib.Hardware.Motors;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import BobcatLib.Hardware.Motors.MotorBuilder.RequestType;
+import static BobcatLib.Hardware.PhoenixUtil.tryUntilOk;
+import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.hardware.ParentDevice;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.sim.TalonFXSimState;
+import BobcatLib.Hardware.Motors.Requests.PositionControl;
+import BobcatLib.Hardware.Motors.Requests.VelocityControl;
 import BobcatLib.Utils.CANDeviceDetails;
-import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+
 
 /**
  * Simulated implementation of the {@link MotorIO} interface. This class uses WPILib's
@@ -17,246 +28,144 @@ import edu.wpi.first.math.util.Units;
  */
 public class MotorIOSim implements MotorIO {
 
-    // Simulation-only constants (not separated in TunerConstants)
-    /** Drive PID proportional gain */
-    public static final double DRIVE_KP = 0.0;
-
-    /** Drive PID derivative gain */
-    public static final double DRIVE_KD = 0.0;
-
-    /** Static feedforward constant */
-    public static final double DRIVE_KS = 0.1;
-
-    /** Rotational velocity feedforward constant */
-    public static final double DRIVE_KV_ROT = 0.0;
-
-    /** Linear feedforward gain (volts per rad/s) */
-    public static double DRIVE_KV = 0.77 / Units.rotationsToRadians(1.0 / DRIVE_KV_ROT);
-
-    /** Turn PID proportional gain */
-    public static final double TURN_KP = 8.0;
-
-    /** Turn PID derivative gain */
-    public static final double TURN_KD = 0.0;
-
-    /** Gearbox for driving simulation */
-    public static final DCMotor DRIVE_GEARBOX = DCMotor.getKrakenX60Foc(1);
-
-    /** Gearbox for turning simulation */
-    public static final DCMotor TURN_GEARBOX = DCMotor.getKrakenX60Foc(1);
-
-    private DCMotorSim driveSim;
-    private DCMotorSim turnSim;
-
-    private boolean driveClosedLoop = false;
-    private boolean turnClosedLoop = false;
-
-    private PIDController velocityController = new PIDController(DRIVE_KP, 0, DRIVE_KD);
-    private PIDController positionController = new PIDController(TURN_KP, 0, TURN_KD);
-
-    private double driveFFVolts = 0.0;
-    private double driveAppliedVolts = 0.0;
-    private double turnAppliedVolts = 0.0;
-
-    /** Whether the simulated motor is in position control mode */
-    public boolean isPositionControl = false;
-
-    private MotorBuilder builder;
-
-
+    private final TalonFX motor;
+    private final StatusSignal<Angle> relativePosition;
+    private final StatusSignal<AngularVelocity> motorVelocity;
+    private final StatusSignal<Voltage> motorAppliedVolts;
+    private final StatusSignal<Current> motorCurrent;
+    private final Debouncer connectedDebounce = new Debouncer(0.5);
+    private final TalonFXConfiguration config;
     private final MotorStateMachine state;
 
+    // Control mode objects reused for performance
+    private final DutyCycleOut dutyCycleOut = new DutyCycleOut(0);
+    private final PositionControl positionControl = new PositionControl(0);
+    private final VelocityControl velocityControl = new VelocityControl(0);
+
+    /** Builder that defines this motor's behavior and control mode */
+    public MotorBuilder builder;
+
+    // Simulation
+    private final TalonFXSimState simState;
+
+
+    private double simulatedPosition = 0.0;
+    private double simulatedVelocity = 0.0;
+    private double maxSimVelocity = 10.0; // rotations/sec
+    private double maxAcceleration = 100.0; // RPS * RPS
+    private final double SIM_LOOP_PERIOD_SEC = 0.02; // 20ms typical loop time
+
 
     /**
-     * Constructs a new MotorIOSim instance using the provided builder and device info.
+     * Constructs a TalonFX motor IO interface using the provided builder and CAN device details.
      *
-     * @param builder The {@link MotorBuilder} configuration for this motor
-     * @param device The CAN device details associated with this motor
+     * @param builder Configuration builder with motor control settings.
+     * @param device CAN ID and bus info for the TalonFX device.
+     * @param usesTorqueCurrent Whether to use torque FOC mode instead of voltage.
      */
-    public MotorIOSim(MotorBuilder builder, CANDeviceDetails device) {
+    public MotorIOSim(MotorBuilder builder, CANDeviceDetails device, boolean usesTorqueCurrent) {
         this.builder = builder;
-        if (builder.getRequestType() == RequestType.POSITION) {
-            this.isPositionControl = true;
-        }
-        driveSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DRIVE_GEARBOX, 0.025,
-                builder.build().Feedback.SensorToMechanismRatio), DRIVE_GEARBOX);
-        turnSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(TURN_GEARBOX, 0.004,
-                builder.build().Feedback.SensorToMechanismRatio), TURN_GEARBOX);
+        this.motor = new TalonFX(device.id(), device.bus());
+        this.config = builder.build();
 
-        positionController.enableContinuousInput(-Math.PI, Math.PI);
+        positionControl.withTorqueFOC(usesTorqueCurrent);
+        velocityControl.withTorqueFOC(usesTorqueCurrent);
 
+        // Apply initial configuration with retry logic
+        tryUntilOk(5, () -> motor.getConfigurator().apply(config, 0.25));
 
-        state = new MotorStateMachine();
-        state.setMotorState(0);
-
-
-    }
-
-    /**
-     * Constructs and initializes the sim motor for either velocity or position control based on
-     * {@code isPositionControl}.
-     *
-     * @param builder The {@link MotorBuilder} used to configure the simulation
-     * @param device The CAN device being simulated
-     * @param inertia The moment of inertia of the mechanism
-     */
-    public MotorIOSim(MotorBuilder builder, CANDeviceDetails device, double inertia) {
-        if (isPositionControl) {
-            asPositionControl(inertia);
-        } else {
-            asVelocityControl(inertia);
-        }
+        // Get references to sensor signals
+        relativePosition = motor.getPosition();
+        motorVelocity = motor.getVelocity();
+        motorAppliedVolts = motor.getMotorVoltage();
+        motorCurrent = motor.getStatorCurrent();
 
         state = new MotorStateMachine();
-        state.setMotorState(0);
+        state.setMotorState(motorCurrent.getValueAsDouble());
+
+        // Optimize CAN bus usage
+        BaseStatusSignal.setUpdateFrequencyForAll(50.0, relativePosition, motorVelocity,
+                motorAppliedVolts, motorCurrent);
+        ParentDevice.optimizeBusUtilizationForAll(motor);
+
+        simState = motor.getSimState();
     }
 
     /**
-     * Initializes this simulated motor for position control.
+     * Periodically updates input signals from the motor for use in system-level logic.
      *
-     * @param inertia The inertia of the motor mechanism
-     * @return this instance for method chaining
-     */
-    public MotorIOSim asPositionControl(double inertia) {
-        driveSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DRIVE_GEARBOX, inertia,
-                builder.build().Feedback.SensorToMechanismRatio), DRIVE_GEARBOX);
-        return this;
-    }
-
-    /**
-     * Initializes this simulated motor for velocity control.
-     *
-     * @param inertia The inertia of the motor mechanism
-     * @return this instance for method chaining
-     */
-    public MotorIOSim asVelocityControl(double inertia) {
-        turnSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(TURN_GEARBOX, inertia,
-                builder.build().Feedback.SensorToMechanismRatio), TURN_GEARBOX);
-        positionController.enableContinuousInput(-Math.PI, Math.PI);
-        return this;
-    }
-
-    /**
-     * Periodically updates the motor inputs from the simulation state.
-     *
-     * @param inputs The container to populate with updated motor telemetry values
+     * @param inputs A container class used to store telemetry data from the motor.
      */
     @Override
     public void updateInputs(MotorIOInputs inputs) {
-        // Run control loops
-        if (driveClosedLoop) {
-            driveAppliedVolts = driveFFVolts
-                    + velocityController.calculate(driveSim.getAngularVelocityRadPerSec());
-        } else {
-            velocityController.reset();
-        }
+        var motorStatus = BaseStatusSignal.refreshAll(relativePosition, motorVelocity,
+                motorAppliedVolts, motorCurrent);
 
-        if (turnClosedLoop) {
-            turnAppliedVolts = positionController.calculate(turnSim.getAngularPositionRad());
-        } else {
-            positionController.reset();
-        }
-
-        // Simulate physics
-        driveSim.setInputVoltage(MathUtil.clamp(driveAppliedVolts, -12.0, 12.0));
-        turnSim.setInputVoltage(MathUtil.clamp(turnAppliedVolts, -12.0, 12.0));
-        driveSim.update(0.02);
-        turnSim.update(0.02);
-
-        // Populate output telemetry
-        inputs.connected = true;
-        inputs.positionRad = driveSim.getAngularPositionRad();
-        inputs.velocityRadPerSec = driveSim.getAngularVelocityRadPerSec();
-        inputs.appliedVolts = driveAppliedVolts;
-        inputs.currentAmps = Math.abs(driveSim.getCurrentDrawAmps());
-        inputs.state = state.setMotorState(inputs.currentAmps);
+        inputs.connected = connectedDebounce.calculate(motorStatus.isOK());
+        inputs.positionRad = Units.rotationsToRadians(relativePosition.getValueAsDouble());
+        inputs.velocityRadPerSec = Units.rotationsToRadians(motorVelocity.getValueAsDouble());
+        inputs.appliedVolts = motorAppliedVolts.getValueAsDouble();
+        inputs.currentAmps = motorCurrent.getValueAsDouble();
+        inputs.state = state.setMotorState(motorCurrent.getValueAsDouble());
     }
 
     /**
-     * Sets the motor output in open-loop (percent output) mode for velocity.
+     * Sets the motor to open-loop velocity control using duty cycle output.
      *
-     * @param output Raw output voltage (typically -12 to 12)
+     * @param output The desired output voltage (in range [-1.0, 1.0]).
      */
-    private void setVelocityOpenLoop(double output) {
-        driveClosedLoop = false;
-        driveAppliedVolts = output;
+    public void setVelocityOpenLoop(double output) {
+        simState.setRotorVelocity(output);
     }
 
     /**
-     * Sets the motor output in open-loop mode for position control.
+     * Sets the motor to open-loop position control using duty cycle output.
      *
-     * @param output Raw output voltage
+     * @param output The desired output voltage (in range [-1.0, 1.0]).
      */
-    private void setPositionOpenLoop(double output) {
-        turnClosedLoop = false;
-        turnAppliedVolts = output;
+    public void setPositionOpenLoop(double output) {
+        simState.setRawRotorPosition(output);
     }
 
     /**
-     * Enables closed-loop velocity control with the given setpoint.
+     * Runs the motor in closed-loop velocity control mode using the internal velocity PID
+     * controller.
      *
-     * @param velocityRadPerSec Target velocity in radians per second
+     * @param velocityRadPerSec The desired velocity in radians per second.
      */
     public void setVelocityClosedLoop(double velocityRadPerSec) {
-        driveClosedLoop = true;
-        driveFFVolts = DRIVE_KS * Math.signum(velocityRadPerSec) + DRIVE_KV * velocityRadPerSec;
-        velocityController.setSetpoint(velocityRadPerSec);
+        double velocityRotPerSec = Units.radiansToRotations(velocityRadPerSec);
+        // Simulate gradual acceleration to the target velocity
+        double velocityError = velocityRotPerSec - simulatedVelocity;
+        double accel = Math.signum(velocityError)
+                * Math.min(Math.abs(velocityError), maxAcceleration * SIM_LOOP_PERIOD_SEC);
+        simulatedVelocity += accel;
+
+        // Update position based on simulated velocity
+        simulatedPosition += simulatedVelocity * SIM_LOOP_PERIOD_SEC;
+
+        // Feed simulated values to the motor's sim state
+        simState.setRotorVelocity(simulatedVelocity);
+        simState.setRawRotorPosition(simulatedPosition);
+        simState.setSupplyVoltage(12.0); // simulate battery voltage
     }
 
     /**
-     * Enables closed-loop position control to reach the desired rotation.
+     * Runs the motor in closed-loop position control mode using the internal position PID
+     * controller.
      *
-     * @param rotation Target rotation
+     * @param rotation The desired target position as a {@link Rotation2d} object.
      */
     public void setPositionClosedLoop(Rotation2d rotation) {
-        turnClosedLoop = true;
-        positionController.setSetpoint(rotation.getRadians());
-    }
+        var rotations = rotation.getRotations();
+        double error = rotations - simulatedPosition;
+        double delta = Math.signum(error)
+                * Math.min(Math.abs(error), maxSimVelocity * SIM_LOOP_PERIOD_SEC);
 
-    /**
-     * Sets PID and feedforward parameters based on the control mode.
-     *
-     * @param kp Proportional gain
-     * @param kd Derivative gain
-     * @param kv Velocity feedforward gain
-     * @param ka Acceleration feedforward gain (unused)
-     * @param ks Static feedforward gain (unused)
-     */
-    public void setMotorPIDandFF(double kp, double kd, double kv, double ka, double ks) {
-        if (isPositionControl) {
-            setPositionPIDandFF(kp, kd, kv, ka, ks);
-        } else {
-            setVelocityIDandFF(kp, kd, kv, ka, ks);
-        }
-    }
+        simulatedPosition += delta;
 
-    /**
-     * Sets velocity control PID and feedforward parameters.
-     *
-     * @param kp Proportional gain
-     * @param kd Derivative gain
-     * @param kv Velocity feedforward gain
-     * @param ka Acceleration feedforward gain (unused)
-     * @param ks Static feedforward gain (unused)
-     */
-    private void setVelocityIDandFF(double kp, double kd, double kv, double ka, double ks) {
-        velocityController.setP(kp);
-        velocityController.setD(kd);
-        DRIVE_KV = kv;
-    }
-
-    /**
-     * Sets position control PID and feedforward parameters.
-     *
-     * @param kp Proportional gain
-     * @param kd Derivative gain
-     * @param kv Velocity feedforward gain
-     * @param ka Acceleration feedforward gain (unused)
-     * @param ks Static feedforward gain (unused)
-     */
-    private void setPositionPIDandFF(double kp, double kd, double kv, double ka, double ks) {
-        velocityController.setP(kp);
-        velocityController.setD(kd);
-        DRIVE_KV = kv;
+        simState.setRawRotorPosition(simulatedPosition);
+        simState.setRotorVelocity(delta / SIM_LOOP_PERIOD_SEC);
+        simState.setSupplyVoltage(12.0); // simulate battery voltage
     }
 }
