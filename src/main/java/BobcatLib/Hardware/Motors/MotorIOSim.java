@@ -11,9 +11,9 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
 
 /**
- * Simulated implementation of the {@link MotorIO} interface.
- * This class uses WPILib's {@link DCMotorSim} to simulate real motor behavior,
- * including position and velocity control via PID.
+ * Simulated implementation of the {@link MotorIO} interface. This class uses WPILib's
+ * {@link DCMotorSim} to simulate real motor behavior, including position and velocity control via
+ * PID.
  */
 public class MotorIOSim implements MotorIO {
 
@@ -64,30 +64,24 @@ public class MotorIOSim implements MotorIO {
     private MotorBuilder builder;
 
 
-  private final MotorStateMachine state;
+    private final MotorStateMachine state;
 
 
     /**
      * Constructs a new MotorIOSim instance using the provided builder and device info.
      *
      * @param builder The {@link MotorBuilder} configuration for this motor
-     * @param device  The CAN device details associated with this motor
+     * @param device The CAN device details associated with this motor
      */
     public MotorIOSim(MotorBuilder builder, CANDeviceDetails device) {
         this.builder = builder;
         if (builder.getRequestType() == RequestType.POSITION) {
             this.isPositionControl = true;
         }
-        driveSim =
-        new DCMotorSim(
-            LinearSystemId.createDCMotorSystem(
-                DRIVE_GEARBOX, 0.025, builder.build().Feedback.SensorToMechanismRatio),
-            DRIVE_GEARBOX);
-    turnSim =
-        new DCMotorSim(
-            LinearSystemId.createDCMotorSystem(
-                TURN_GEARBOX, 0.004, builder.build().Feedback.SensorToMechanismRatio),
-            TURN_GEARBOX);
+        driveSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DRIVE_GEARBOX, 0.025,
+                builder.build().Feedback.SensorToMechanismRatio), DRIVE_GEARBOX);
+        turnSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(TURN_GEARBOX, 0.004,
+                builder.build().Feedback.SensorToMechanismRatio), TURN_GEARBOX);
 
         positionController.enableContinuousInput(-Math.PI, Math.PI);
 
@@ -99,11 +93,12 @@ public class MotorIOSim implements MotorIO {
     }
 
     /**
-     * Constructs and initializes the sim motor for either velocity or position control based on {@code isPositionControl}.
+     * Constructs and initializes the sim motor for either velocity or position control based on
+     * {@code isPositionControl}.
      *
-     * @param builder  The {@link MotorBuilder} used to configure the simulation
-     * @param device   The CAN device being simulated
-     * @param inertia  The moment of inertia of the mechanism
+     * @param builder The {@link MotorBuilder} used to configure the simulation
+     * @param device The CAN device being simulated
+     * @param inertia The moment of inertia of the mechanism
      */
     public MotorIOSim(MotorBuilder builder, CANDeviceDetails device, double inertia) {
         if (isPositionControl) {
@@ -123,9 +118,8 @@ public class MotorIOSim implements MotorIO {
      * @return this instance for method chaining
      */
     public MotorIOSim asPositionControl(double inertia) {
-        driveSim = new DCMotorSim(
-                LinearSystemId.createDCMotorSystem(DRIVE_GEARBOX, inertia, builder.build().Feedback.SensorToMechanismRatio),
-                DRIVE_GEARBOX);
+        driveSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DRIVE_GEARBOX, inertia,
+                builder.build().Feedback.SensorToMechanismRatio), DRIVE_GEARBOX);
         return this;
     }
 
@@ -136,9 +130,8 @@ public class MotorIOSim implements MotorIO {
      * @return this instance for method chaining
      */
     public MotorIOSim asVelocityControl(double inertia) {
-        turnSim = new DCMotorSim(
-                LinearSystemId.createDCMotorSystem(TURN_GEARBOX, inertia, builder.build().Feedback.SensorToMechanismRatio),
-                TURN_GEARBOX);
+        turnSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(TURN_GEARBOX, inertia,
+                builder.build().Feedback.SensorToMechanismRatio), TURN_GEARBOX);
         positionController.enableContinuousInput(-Math.PI, Math.PI);
         return this;
     }
@@ -152,7 +145,8 @@ public class MotorIOSim implements MotorIO {
     public void updateInputs(MotorIOInputs inputs) {
         // Run control loops
         if (driveClosedLoop) {
-            driveAppliedVolts = driveFFVolts + velocityController.calculate(driveSim.getAngularVelocityRadPerSec());
+            driveAppliedVolts = driveFFVolts
+                    + velocityController.calculate(driveSim.getAngularVelocityRadPerSec());
         } else {
             velocityController.reset();
         }

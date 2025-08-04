@@ -184,9 +184,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Adds software limits for forward motion.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MotorBuilder.html" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#withPIDController(BobcatLib.Utils.PidControllerWrapper)" class="member-name-link">withPIDController</a><wbr>(<a href="../../Utils/PidControllerWrapper.html" title="class in BobcatLib.Utils">PidControllerWrapper</a>&nbsp;pid)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#withPIDController(com.ctre.phoenix6.configs.ParentConfiguration,int)" class="member-name-link">withPIDController</a><wbr>(<a href="https://api.ctr-electronics.com/phoenix6/release/java/com/ctre/phoenix6/configs/ParentConfiguration.html" title="class or interface in com.ctre.phoenix6.configs" class="external-link">ParentConfiguration</a>&nbsp;pid,
+ int&nbsp;slotNum)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Adds a PID controller configuration using a <a href="../../Utils/PidControllerWrapper.html" title="class in BobcatLib.Utils"><code>PidControllerWrapper</code></a>.</div>
+<div class="block">Adds a PID controller configuration using a <a href="https://api.ctr-electronics.com/phoenix6/release/java/com/ctre/phoenix6/configs/ParentConfiguration.html" title="class or interface in com.ctre.phoenix6.configs" class="external-link"><code>ParentConfiguration</code></a>.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MotorBuilder.html" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#withReverseLimits(BobcatLib.Hardware.Motors.SoftwareLimits)" class="member-name-link">withReverseLimits</a><wbr>(<a href="SoftwareLimits.html" title="class in BobcatLib.Hardware.Motors">SoftwareLimits</a>&nbsp;limits)</code></div>
@@ -273,13 +274,15 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="withPIDController(BobcatLib.Utils.PidControllerWrapper)">
+<section class="detail" id="withPIDController(com.ctre.phoenix6.configs.ParentConfiguration,int)">
 <h3>withPIDController</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MotorBuilder.html" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a></span>&nbsp;<span class="element-name">withPIDController</span><wbr><span class="parameters">(<a href="../../Utils/PidControllerWrapper.html" title="class in BobcatLib.Utils">PidControllerWrapper</a>&nbsp;pid)</span></div>
-<div class="block">Adds a PID controller configuration using a <a href="../../Utils/PidControllerWrapper.html" title="class in BobcatLib.Utils"><code>PidControllerWrapper</code></a>.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MotorBuilder.html" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a></span>&nbsp;<span class="element-name">withPIDController</span><wbr><span class="parameters">(<a href="https://api.ctr-electronics.com/phoenix6/release/java/com/ctre/phoenix6/configs/ParentConfiguration.html" title="class or interface in com.ctre.phoenix6.configs" class="external-link">ParentConfiguration</a>&nbsp;pid,
+ int&nbsp;slotNum)</span></div>
+<div class="block">Adds a PID controller configuration using a <a href="https://api.ctr-electronics.com/phoenix6/release/java/com/ctre/phoenix6/configs/ParentConfiguration.html" title="class or interface in com.ctre.phoenix6.configs" class="external-link"><code>ParentConfiguration</code></a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>pid</code> - the PID configuration</dd>
+<dd><code>slotNum</code> - the slot you want to assign to the motor</dd>
 <dt>Returns:</dt>
 <dd>this builder</dd>
 </dl>

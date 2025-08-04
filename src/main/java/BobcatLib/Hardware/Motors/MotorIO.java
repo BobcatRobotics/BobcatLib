@@ -1,6 +1,5 @@
 package BobcatLib.Hardware.Motors;
 
-import org.dyn4j.geometry.Rotation;
 import org.littletonrobotics.junction.AutoLog;
 import BobcatLib.Hardware.Motors.MotorStateMachine.MotorState;
 import edu.wpi.first.math.geometry.Rotation2d;

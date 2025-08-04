@@ -84,8 +84,8 @@ loadScripts(document, 'script');</script>
 implements <a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors">MotorIO</a></span></div>
 <div class="block">Hardware I/O implementation for the CTRE TalonFX motor using the Phoenix 6 API.
  <p>
- This class handles motor input and output functionality, including telemetry updates
- and setting control modes (open/closed-loop, voltage or torque-current).</div>
+ This class handles motor input and output functionality, including telemetry updates and setting
+ control modes (open/closed-loop, voltage or torque-current).</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -110,7 +110,7 @@ implements <a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors"
 <div class="col-first even-row-color"><code><a href="MotorBuilder.html" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a></code></div>
 <div class="col-second even-row-color"><code><a href="#builder" class="member-name-link">builder</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Builder that defines this motor’s behavior and control mode</div>
+<div class="block">Builder that defines this motor's behavior and control mode</div>
 </div>
 </div>
 </section>
@@ -123,8 +123,9 @@ implements <a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors"
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(BobcatLib.Hardware.Motors.MotorBuilder,BobcatLib.Utils.CANDeviceDetails)" class="member-name-link">MotorIOTalonFX</a><wbr>(<a href="MotorBuilder.html" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a>&nbsp;builder,
- <a href="../../Utils/CANDeviceDetails.html" title="class in BobcatLib.Utils">CANDeviceDetails</a>&nbsp;device)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(BobcatLib.Hardware.Motors.MotorBuilder,BobcatLib.Utils.CANDeviceDetails,boolean)" class="member-name-link">MotorIOTalonFX</a><wbr>(<a href="MotorBuilder.html" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a>&nbsp;builder,
+ <a href="../../Utils/CANDeviceDetails.html" title="class in BobcatLib.Utils">CANDeviceDetails</a>&nbsp;device,
+ boolean&nbsp;usesTorqueCurrent)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Constructs a TalonFX motor IO interface using the provided builder and CAN device details.</div>
 </div>
@@ -143,37 +144,28 @@ implements <a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors"
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMotorPIDandFF(double,double,double,double,double)" class="member-name-link">setMotorPIDandFF</a><wbr>(double&nbsp;kp,
- double&nbsp;kd,
- double&nbsp;kv,
- double&nbsp;ka,
- double&nbsp;ks)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPositionClosedLoop(edu.wpi.first.math.geometry.Rotation2d)" class="member-name-link">setPositionClosedLoop</a><wbr>(<a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Rotation2d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link">Rotation2d</a>&nbsp;rotation)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Dynamically updates the motor's PID and feedforward gains during runtime.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPositionClosedLoop(edu.wpi.first.math.geometry.Rotation2d)" class="member-name-link">setPositionClosedLoop</a><wbr>(<a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Rotation2d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link">Rotation2d</a>&nbsp;rotation)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Runs the motor in closed-loop position control mode using the internal position PID controller.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPositionOpenLoop(double)" class="member-name-link">setPositionOpenLoop</a><wbr>(double&nbsp;output)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Sets the motor to open-loop position control (manual voltage).</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setVelocityClosedLoop(double)" class="member-name-link">setVelocityClosedLoop</a><wbr>(double&nbsp;velocityRadPerSec)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPositionOpenLoop(double)" class="member-name-link">setPositionOpenLoop</a><wbr>(double&nbsp;output)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Sets the motor to open-loop position control using duty cycle output.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setVelocityClosedLoop(double)" class="member-name-link">setVelocityClosedLoop</a><wbr>(double&nbsp;velocityRadPerSec)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Runs the motor in closed-loop velocity control mode using the internal velocity PID controller.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setVelocityOpenLoop(double)" class="member-name-link">setVelocityOpenLoop</a><wbr>(double&nbsp;output)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Sets the motor to open-loop velocity control.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateInputs(BobcatLib.Hardware.Motors.MotorIO.MotorIOInputs)" class="member-name-link">updateInputs</a><wbr>(<a href="MotorIO.MotorIOInputs.html" title="class in BobcatLib.Hardware.Motors">MotorIO.MotorIOInputs</a>&nbsp;inputs)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setVelocityOpenLoop(double)" class="member-name-link">setVelocityOpenLoop</a><wbr>(double&nbsp;output)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Sets the motor to open-loop velocity control using duty cycle output.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateInputs(BobcatLib.Hardware.Motors.MotorIO.MotorIOInputs)" class="member-name-link">updateInputs</a><wbr>(<a href="MotorIO.MotorIOInputs.html" title="class in BobcatLib.Hardware.Motors">MotorIO.MotorIOInputs</a>&nbsp;inputs)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Periodically updates input signals from the motor for use in system-level logic.</div>
 </div>
 </div>
@@ -197,7 +189,7 @@ implements <a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors"
 <section class="detail" id="builder">
 <h3>builder</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MotorBuilder.html" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a></span>&nbsp;<span class="element-name">builder</span></div>
-<div class="block">Builder that defines this motor’s behavior and control mode</div>
+<div class="block">Builder that defines this motor's behavior and control mode</div>
 </section>
 </li>
 </ul>
@@ -209,15 +201,17 @@ implements <a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors"
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(BobcatLib.Hardware.Motors.MotorBuilder,BobcatLib.Utils.CANDeviceDetails)">
+<section class="detail" id="&lt;init&gt;(BobcatLib.Hardware.Motors.MotorBuilder,BobcatLib.Utils.CANDeviceDetails,boolean)">
 <h3>MotorIOTalonFX</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">MotorIOTalonFX</span><wbr><span class="parameters">(<a href="MotorBuilder.html" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a>&nbsp;builder,
- <a href="../../Utils/CANDeviceDetails.html" title="class in BobcatLib.Utils">CANDeviceDetails</a>&nbsp;device)</span></div>
+ <a href="../../Utils/CANDeviceDetails.html" title="class in BobcatLib.Utils">CANDeviceDetails</a>&nbsp;device,
+ boolean&nbsp;usesTorqueCurrent)</span></div>
 <div class="block">Constructs a TalonFX motor IO interface using the provided builder and CAN device details.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>builder</code> - Configuration builder with motor control settings.</dd>
 <dd><code>device</code> - CAN ID and bus info for the TalonFX device.</dd>
+<dd><code>usesTorqueCurrent</code> - Whether to use torque FOC mode instead of voltage.</dd>
 </dl>
 </section>
 </li>
@@ -246,10 +240,10 @@ implements <a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors"
 <section class="detail" id="setVelocityOpenLoop(double)">
 <h3>setVelocityOpenLoop</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setVelocityOpenLoop</span><wbr><span class="parameters">(double&nbsp;output)</span></div>
-<div class="block">Sets the motor to open-loop velocity control.</div>
+<div class="block">Sets the motor to open-loop velocity control using duty cycle output.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>output</code> - The desired output voltage or current (in range [-1.0, 1.0]).</dd>
+<dd><code>output</code> - The desired output voltage (in range [-1.0, 1.0]).</dd>
 </dl>
 </section>
 </li>
@@ -257,10 +251,10 @@ implements <a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors"
 <section class="detail" id="setPositionOpenLoop(double)">
 <h3>setPositionOpenLoop</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setPositionOpenLoop</span><wbr><span class="parameters">(double&nbsp;output)</span></div>
-<div class="block">Sets the motor to open-loop position control (manual voltage).</div>
+<div class="block">Sets the motor to open-loop position control using duty cycle output.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>output</code> - The desired output voltage or current (in range [-1.0, 1.0]).</dd>
+<dd><code>output</code> - The desired output voltage (in range [-1.0, 1.0]).</dd>
 </dl>
 </section>
 </li>
@@ -287,27 +281,6 @@ implements <a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors"
 <dd><code><a href="MotorIO.html#setPositionClosedLoop(edu.wpi.first.math.geometry.Rotation2d)">setPositionClosedLoop</a></code>&nbsp;in interface&nbsp;<code><a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors">MotorIO</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>rotation</code> - The desired target position as a <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/math/geometry/Rotation2d.html" title="class or interface in edu.wpi.first.math.geometry" class="external-link"><code>Rotation2d</code></a> object.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setMotorPIDandFF(double,double,double,double,double)">
-<h3>setMotorPIDandFF</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMotorPIDandFF</span><wbr><span class="parameters">(double&nbsp;kp,
- double&nbsp;kd,
- double&nbsp;kv,
- double&nbsp;ka,
- double&nbsp;ks)</span></div>
-<div class="block">Dynamically updates the motor's PID and feedforward gains during runtime.
- <p>
- This is useful for live tuning.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>kp</code> - Proportional gain.</dd>
-<dd><code>kd</code> - Derivative gain.</dd>
-<dd><code>kv</code> - Velocity feedforward gain.</dd>
-<dd><code>ka</code> - Acceleration feedforward gain.</dd>
-<dd><code>ks</code> - Static feedforward gain.</dd>
 </dl>
 </section>
 </li>

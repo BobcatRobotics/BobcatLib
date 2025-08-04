@@ -1,10 +1,14 @@
 package BobcatLib.Hardware.Motors;
 
+import com.ctre.phoenix6.configs.ParentConfiguration;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.Slot1Configs;
+import com.ctre.phoenix6.configs.Slot2Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import BobcatLib.Utils.PidControllerWrapper;
+
 
 /**
  * A builder class for configuring and generating a {@link TalonFXConfiguration}
@@ -90,14 +94,28 @@ public class MotorBuilder {
     }
 
     /**
-     * Adds a PID controller configuration using a {@link PidControllerWrapper}.
+     * Adds a PID controller configuration using a {@link ParentConfiguration}.
      *
      * @param pid the PID configuration
+     * @param slotNum the slot you want to assign to the motor
      * @return this builder
      */
-    public MotorBuilder withPIDController(PidControllerWrapper pid) {
+    public MotorBuilder withPIDController(ParentConfiguration pid, int slotNum) {
         if (pid != null) {
-            config.Slot0 = pid.getSlot0Config();
+            switch (slotNum) {
+                case 1:
+                    var output1 = (Slot1Configs) pid;
+                    config.Slot1 = output1;
+                    break;
+                case 2:
+                    var output2 = (Slot2Configs) pid;
+                    config.Slot2 = output2;
+                    break;
+                default:
+                    var output = (Slot0Configs) pid;
+                    config.Slot0 = output;
+                    break;
+            }
         }
         return this;
     }

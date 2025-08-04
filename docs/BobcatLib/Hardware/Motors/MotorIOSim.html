@@ -82,9 +82,9 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">MotorIOSim</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors">MotorIO</a></span></div>
-<div class="block">Simulated implementation of the <a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors"><code>MotorIO</code></a> interface.
- This class uses WPILib's <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/simulation/DCMotorSim.html" title="class or interface in edu.wpi.first.wpilibj.simulation" class="external-link"><code>DCMotorSim</code></a> to simulate real motor behavior,
- including position and velocity control via PID.</div>
+<div class="block">Simulated implementation of the <a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors"><code>MotorIO</code></a> interface. This class uses WPILib's
+ <a href="https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/simulation/DCMotorSim.html" title="class or interface in edu.wpi.first.wpilibj.simulation" class="external-link"><code>DCMotorSim</code></a> to simulate real motor behavior, including position and velocity control via
+ PID.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -176,7 +176,8 @@ implements <a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors"
  <a href="../../Utils/CANDeviceDetails.html" title="class in BobcatLib.Utils">CANDeviceDetails</a>&nbsp;device,
  double&nbsp;inertia)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Constructs and initializes the sim motor for either velocity or position control based on <code>isPositionControl</code>.</div>
+<div class="block">Constructs and initializes the sim motor for either velocity or position control based on
+ <code>isPositionControl</code>.</div>
 </div>
 </div>
 </section>
@@ -388,7 +389,8 @@ implements <a href="MotorIO.html" title="interface in BobcatLib.Hardware.Motors"
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">MotorIOSim</span><wbr><span class="parameters">(<a href="MotorBuilder.html" title="class in BobcatLib.Hardware.Motors">MotorBuilder</a>&nbsp;builder,
  <a href="../../Utils/CANDeviceDetails.html" title="class in BobcatLib.Utils">CANDeviceDetails</a>&nbsp;device,
  double&nbsp;inertia)</span></div>
-<div class="block">Constructs and initializes the sim motor for either velocity or position control based on <code>isPositionControl</code>.</div>
+<div class="block">Constructs and initializes the sim motor for either velocity or position control based on
+ <code>isPositionControl</code>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>builder</code> - The <a href="MotorBuilder.html" title="class in BobcatLib.Hardware.Motors"><code>MotorBuilder</code></a> used to configure the simulation</dd>
