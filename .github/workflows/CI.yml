@@ -110,6 +110,7 @@ jobs:
         working-directory: combiner
       - name: Generate Javadoc
         run: './gradlew javadoc'
+        working-directory: combiner
       - name: Copy to release folder
         run: |
           mkdir -p ~/releases
