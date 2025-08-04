@@ -108,6 +108,11 @@ jobs:
       - name: Combine
         run: ./gradlew publish -Pthirdparty
         working-directory: combiner
+      - name: List outputs folder
+        run: |
+          echo "Contents of build/outputs directory:"
+          ls -R build/outputs || true
+        working-directory: combiner
       - name: Copy to release folder
         run: |
           mkdir -p ~/releases
