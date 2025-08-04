@@ -109,7 +109,7 @@ jobs:
         run: ./gradlew publish -Pthirdparty
         working-directory: combiner
       - name: Generate Javadoc
-        run: './gradlew javadoc'
+        run: './gradlew clean javadoc'
         working-directory: combiner
       - name: Copy to release folder
         run: |

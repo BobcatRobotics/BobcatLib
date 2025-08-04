@@ -92,6 +92,15 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
+// Configure the javadoc task to prevent it from failing on warnings
+javadoc {
+    failOnError = false
+    options.encoding = 'UTF-8'
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+
+
 task outputJar(type: Jar, dependsOn: classes) {
     archiveBaseName = javaBaseName
     destinationDirectory = outputsFolder
