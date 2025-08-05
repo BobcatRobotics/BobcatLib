@@ -53,7 +53,7 @@ public class MotorIOSim implements MotorIO {
     private double simulatedVelocity = 0.0;
     private double maxSimVelocity = 10.0; // rotations/sec
     private double maxAcceleration = 100.0; // RPS * RPS
-    private final double SIM_LOOP_PERIOD_SEC = 0.02; // 20ms typical loop time
+    private final double simLoopPeriodSec = 0.02; // 20ms typical loop time
 
 
     /**
@@ -138,11 +138,11 @@ public class MotorIOSim implements MotorIO {
         // Simulate gradual acceleration to the target velocity
         double velocityError = velocityRotPerSec - simulatedVelocity;
         double accel = Math.signum(velocityError)
-                * Math.min(Math.abs(velocityError), maxAcceleration * SIM_LOOP_PERIOD_SEC);
+                * Math.min(Math.abs(velocityError), maxAcceleration * simLoopPeriodSec);
         simulatedVelocity += accel;
 
         // Update position based on simulated velocity
-        simulatedPosition += simulatedVelocity * SIM_LOOP_PERIOD_SEC;
+        simulatedPosition += simulatedVelocity * simLoopPeriodSec;
 
         // Feed simulated values to the motor's sim state
         simState.setRotorVelocity(simulatedVelocity);
@@ -160,12 +160,12 @@ public class MotorIOSim implements MotorIO {
         var rotations = rotation.getRotations();
         double error = rotations - simulatedPosition;
         double delta = Math.signum(error)
-                * Math.min(Math.abs(error), maxSimVelocity * SIM_LOOP_PERIOD_SEC);
+                * Math.min(Math.abs(error), maxSimVelocity * simLoopPeriodSec);
 
         simulatedPosition += delta;
 
         simState.setRawRotorPosition(simulatedPosition);
-        simState.setRotorVelocity(delta / SIM_LOOP_PERIOD_SEC);
+        simState.setRotorVelocity(delta / simLoopPeriodSec);
         simState.setSupplyVoltage(12.0); // simulate battery voltage
     }
 }

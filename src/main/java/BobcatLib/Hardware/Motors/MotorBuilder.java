@@ -8,14 +8,15 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import BobcatLib.Utils.TunnablePidController;
 
 
 /**
- * A builder class for configuring and generating a {@link TalonFXConfiguration}
- * for CTRE TalonFX motor controllers.
+ * A builder class for configuring and generating a {@link TalonFXConfiguration} for CTRE TalonFX
+ * motor controllers.
  * <p>
- * This builder provides a fluent API for defining motor behavior including PID,
- * direction, feedback sensors, FOC, current limits, and software limits.
+ * This builder provides a fluent API for defining motor behavior including PID, direction, feedback
+ * sensors, FOC, current limits, and software limits.
  * </p>
  */
 public class MotorBuilder {
@@ -60,17 +61,17 @@ public class MotorBuilder {
     /**
      * Private constructor for required parameters.
      *
-     * @param requestType         the control mode for the motor
-     * @param neutralBrake        true if motor should brake when idle
-     * @param ccwPositive         true if counter-clockwise is positive
-     * @param motorToMechRatio    motor-to-mechanism gear ratio
-     * @param statorCurrentLimit  stator current limit in amps
-     * @param supplyCurrentLimit  supply current limit in amps
-     * @param isFOC               true to enable Field-Oriented Control
+     * @param requestType the control mode for the motor
+     * @param neutralBrake true if motor should brake when idle
+     * @param ccwPositive true if counter-clockwise is positive
+     * @param motorToMechRatio motor-to-mechanism gear ratio
+     * @param statorCurrentLimit stator current limit in amps
+     * @param supplyCurrentLimit supply current limit in amps
+     * @param isFOC true to enable Field-Oriented Control
      */
     public MotorBuilder(RequestType requestType, boolean neutralBrake, boolean ccwPositive,
-                         double motorToMechRatio, double statorCurrentLimit,
-                         double supplyCurrentLimit, boolean isFOC) {
+            double motorToMechRatio, double statorCurrentLimit, double supplyCurrentLimit,
+            boolean isFOC) {
         this.requestType = requestType;
         this.isFOC = isFOC;
 
@@ -89,8 +90,7 @@ public class MotorBuilder {
      * @return a {@link MotorBuilder} instance
      */
     public static MotorBuilder defaults() {
-        return new MotorBuilder(RequestType.NONE, false, true,
-                1.0, 80.0, 40.0, false);
+        return new MotorBuilder(RequestType.NONE, false, true, 1.0, 80.0, 40.0, false);
     }
 
     /**
@@ -100,20 +100,41 @@ public class MotorBuilder {
      * @param slotNum the slot you want to assign to the motor
      * @return this builder
      */
-    public MotorBuilder withPIDController(ParentConfiguration pid, int slotNum) {
+    public MotorBuilder withPIDController(TunnablePidController pid, int slotNum) {
         if (pid != null) {
             switch (slotNum) {
                 case 1:
-                    var output1 = (Slot1Configs) pid;
+                    var output1 = new Slot1Configs();
+                    output1.kP = pid.getKP();
+                    output1.kI = pid.getKI();
+                    output1.kD = pid.getKD();
+                    output1.kA = pid.getKA();
+                    output1.kG = pid.getKG();
+                    output1.kS = pid.getKS();
+                    output1.kV = pid.getKV();
                     config.Slot1 = output1;
                     break;
                 case 2:
-                    var output2 = (Slot2Configs) pid;
+                    var output2 = new Slot2Configs();
+                    output2.kP = pid.getKP();
+                    output2.kI = pid.getKI();
+                    output2.kD = pid.getKD();
+                    output2.kA = pid.getKA();
+                    output2.kG = pid.getKG();
+                    output2.kS = pid.getKS();
+                    output2.kV = pid.getKV();
                     config.Slot2 = output2;
                     break;
                 default:
-                    var output = (Slot0Configs) pid;
-                    config.Slot0 = output;
+                    var output0 = new Slot0Configs();
+                    output0.kP = pid.getKP();
+                    output0.kI = pid.getKI();
+                    output0.kD = pid.getKD();
+                    output0.kA = pid.getKA();
+                    output0.kG = pid.getKG();
+                    output0.kS = pid.getKS();
+                    output0.kV = pid.getKV();
+                    config.Slot0 = output0;
                     break;
             }
         }
@@ -138,15 +159,14 @@ public class MotorBuilder {
      * @return this builder
      */
     public MotorBuilder ccwPositive(boolean ccwPositive) {
-        config.MotorOutput.Inverted = ccwPositive
-                ? InvertedValue.Clockwise_Positive
+        config.MotorOutput.Inverted = ccwPositive ? InvertedValue.Clockwise_Positive
                 : InvertedValue.CounterClockwise_Positive;
         return this;
     }
 
     /**
-     * Sets the gear ratio from the motor to the mechanism.
-     * Only applies if a feedback sensor is configured.
+     * Sets the gear ratio from the motor to the mechanism. Only applies if a feedback sensor is
+     * configured.
      *
      * @param mechanismRatio the ratio to set
      * @return this builder
@@ -216,7 +236,7 @@ public class MotorBuilder {
      * Configures a feedback sensor.
      *
      * @param feedbackId the CAN ID of the sensor
-     * @param type       the {@link FeedbackSensorType}
+     * @param type the {@link FeedbackSensorType}
      * @return this builder
      */
     public MotorBuilder withFeedbackSensor(int feedbackId, FeedbackSensorType type) {
